@@ -11,12 +11,12 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="auction")
 @NamedQuery(name="Auction.findAll", query="SELECT a FROM Auction a")
 public class Auction implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="item_id")
 	private int itemId;
 
@@ -28,7 +28,7 @@ public class Auction implements Serializable {
 	@Column(name="start_date")
 	private Date startDate;
 
-	private String verified;
+	private char verified;
 
 	//bi-directional one-to-one association to Item
 	@OneToOne
@@ -71,11 +71,11 @@ public class Auction implements Serializable {
 		this.startDate = startDate;
 	}
 
-	public String getVerified() {
+	public char getVerified() {
 		return this.verified;
 	}
 
-	public void setVerified(String verified) {
+	public void setVerified(char verified) {
 		this.verified = verified;
 	}
 
