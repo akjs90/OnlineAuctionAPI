@@ -36,6 +36,10 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user")
 	private List<Item> items;
 
+	@OneToOne
+	@JoinColumn(name="role_id")
+	private UserRole role;
+	
 	public User() {
 	}
 
@@ -127,6 +131,14 @@ public class User implements Serializable {
 		item.setUser(null);
 
 		return item;
+	}
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 
 }
