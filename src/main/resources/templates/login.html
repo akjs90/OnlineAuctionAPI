@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Online Auction</title>
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
+<script type="text/javascript" src="../static/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<!-- <h1>Welcome to Online Auction</h1> -->
+	<h2>Login</h2>
+
+	<div class="col-sm-12 container">
+		<form th:action="@{login}" th:object="" method="post">
+			<div style="text-align: center;">
+				<img alt="avatar" src="../static/images/avatar.png" class="img-circle" style="width: 20%;">
+			</div>
+			<div class="form-group">
+				<label>Username</label><br> <input type="text" name="username" placeholder="Enter Username" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label>Password</label><br> <input type="password" name="password" class="form-control" placeholder="Enter Password" />
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-block" value="Login" style="background-color: #4CAF50; color: white;" />
+			</div>
+			<div class="form-group">
+				<div class="checkbox" style="margin-left: 21px;">
+					<input type="checkbox" checked="checked" /><label>Remember Me</label>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</body>
+</html>
