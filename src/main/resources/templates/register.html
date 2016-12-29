@@ -3,34 +3,121 @@
 <head>
 <meta charset="UTF-8" />
 <title>Online Auction</title>
-<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css" />
 <script type="text/javascript" src="../static/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+<style type="text/css">
+.form-login {
+	max-width: 500px;
+	margin: auto;
+	border: 2px solid #CCCCCC;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.navbar-custom-color {
+	background-color: #4CAF50;
+}
+
+.nav.navbar-nav li a {
+	color: white !important;
+}
+
+.nav.navbar-nav li a:HOVER {
+	color: black !important;
+}
+.badge{
+background-color: #b9192f;
+}
+.icon-bar {
+	background-color: white !important;
+}
+</style>
 </head>
 <body>
-<div class="container col-sm-12">
-<form th:action="@{register}" method="post" enctype="multipart/form-data">
-<div class="form-group">
-<label>Username</label>
-<input type="text" name="username" placeholder="Enter username" class="form-control"/>
-</div>
-<div class="form-group">
-<label>Email</label>
-<input type="text" name="email" placeholder="Enter email" class="form-control"/>
-</div>
-<div class="form-group">
-<label>Password</label>
-<input type="password" name="username" placeholder="Enter password (min length 6)" class="form-control"/>
-</div>
-<div class="form-group">
-<label>Confirm Password</label>
-<input type="password" name="username" placeholder="Re-enter password" class="form-control"/>
-</div>
-<div class="form-group">
-<label>Address</label>
-<input type="text" name="address" placeholder="Enter address" class="form-control"/>
-</div>
-</form>
-</div>
+	<div
+		class="navbar navbar-default navbar-static-top navbar-custom-color"
+		role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand" style="color: white;">Online
+					Auction</a>
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">People</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Auction<span class="caret"></span></a>
+						<ul class="dropdown-menu navbar-custom-color">
+							<li><a href="#">Completed <span class="badge">2</span></a></li>
+							<li><a href="#">All</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Requests <span class="badge">10</span></a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Current <span class="badge">3</span></a></li>
+						</ul></li>
+					<li><a href="#">Reports</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> &nbsp;Login</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container col-sm-8 col-sm-offset-2">
+		<form th:action="@{register}" method="post"
+			enctype="multipart/form-data" class="form-login">
+			<div style="text-align: center;">
+				<img alt="signup" th:src="@{static/images/signup_icon.png}"
+					src="../static/images/signup_icon.png" class="img-circle"
+					style="width: 40%">
+			</div>
+			<div class="form-group">
+				<label>Username</label> <input type="text" name="username"
+					placeholder="Enter username" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label>Email</label> <input type="text" name="email"
+					placeholder="Enter email" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label>Password</label> <input type="password" name="username"
+					placeholder="Enter password (min length 6)" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label>Confirm Password</label> <input type="password"
+					name="username" placeholder="Re-enter password"
+					class="form-control" />
+			</div>
+			<div class="form-group">
+				<label>Address</label> <input type="text" name="address"
+					placeholder="Enter address" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<input type="submit" class="btn btn-block"
+					value="Create Your Account"
+					style="background-color: #4CAF50; color: white;">
+			</div>
+			<div class="form-group">
+				By creating an account, you agree to our <a href="#">Terms of
+					Use</a> and our <a href="#">Privacy Policy</a>.
+			</div>
+			<hr>
+			<h5>
+				Already have an account? <a href="#">Sign In</a>
+			</h5>
+		</form>
+	</div>
 </body>
 </html>
