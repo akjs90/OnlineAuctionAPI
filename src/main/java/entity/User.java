@@ -4,42 +4,44 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the users database table.
  * 
  */
 @Entity
-@Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@Table(name = "users")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="user_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "user_id")
 	private int userId;
 
 	private String address;
 
 	private String name;
 
-	//bi-directional many-to-one association to Auction
-	@OneToMany(mappedBy="user")
+	private String username;
+	private String password;
+	private String enabled;
+	// bi-directional many-to-one association to Auction
+	@OneToMany(mappedBy = "user")
 	private List<Auction> auctions;
 
-	//bi-directional many-to-one association to Bid
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Bid
+	@OneToMany(mappedBy = "user")
 	private List<Bid> bids;
 
-	//bi-directional many-to-one association to Item
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Item
+	@OneToMany(mappedBy = "user")
 	private List<Item> items;
 
 	@OneToOne
-	@JoinColumn(name="role_id")
+	@JoinColumn(name = "role_id")
 	private UserRole role;
-	
+
 	public User() {
 	}
 
@@ -139,6 +141,44 @@ public class User implements Serializable {
 
 	public void setRole(UserRole role) {
 		this.role = role;
+	}
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+
+	/**
+	 * @param username
+	 *            the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password
+	 *            the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
 	}
 
 }

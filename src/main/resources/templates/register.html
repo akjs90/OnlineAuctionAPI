@@ -40,7 +40,7 @@ background-color: #b9192f;
 	
 	<div class="container col-sm-8 col-sm-offset-2">
 		<form th:action="@{register}" method="post"
-			enctype="multipart/form-data" class="form-login">
+			enctype="multipart/form-data" th:object="${reg_user}" class="form-login">
 			<div style="text-align: center;">
 				<img alt="signup" th:src="@{images/signup_icon.png}"
 					src="../static/images/signup_icon.png" class="img-circle"

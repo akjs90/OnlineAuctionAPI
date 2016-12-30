@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,9 +20,10 @@ public class UserRole {
 	
 	private String role;
 	
-	@OneToOne(mappedBy="role")
+	/*@OneToOne(mappedBy="role",fetch=FetchType.LAZY)
 	private User user;
-	
+	*/
+
 	public UserRole() {
 
 	}
@@ -42,12 +44,14 @@ public class UserRole {
 		this.role = role;
 	}
 
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
+
+
 
 }
