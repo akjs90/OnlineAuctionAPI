@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8" th:replace="fragments/header::head"/>
 <title>Online Auction</title>
 <link rel="stylesheet" type="text/css"
 	href="../static/css/bootstrap.min.css" />
@@ -21,13 +21,13 @@
 <body>
 	<!-- <h1>Welcome to Online Auction</h1> -->
 
-
-	<div class="col-sm-8 col-sm-offset-2 container"  style="position: relative;top: 61px">
-		<form th:action="@{login}" th:object="" method="post"
+<div th:replace="fragments/header::navigation"></div>
+	<div class="col-sm-8 col-sm-offset-2 container"  >
+		<form th:action="@{login}"  method="post"
 			class="form-login">
 			<div style="text-align: center;">
-				<img alt="avatar" src="../static/images/avatar.png"
-					class="img-circle" style="width: 40%;">
+				<img alt="avatar" src="../static/images/avatar.png" th:src="@{/images/avatar.png}"
+					class="img-circle" style="width: 40%;"/>
 			</div>
 			<div class="form-group">
 				<label>Username</label> <input type="text" name="username"
@@ -50,7 +50,7 @@
 					</div>
 				</div>
 			</div>
-			<hr>
+			<hr/>
 			<h5>New to Auction? <a href="#">Register Here</a></h5>
 		</form>
 	</div>

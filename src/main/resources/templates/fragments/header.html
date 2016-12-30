@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="ISO-8859-1"/>
+<title>Online Auction</title>
+
+<link rel="stylesheet" type="text/css"	href="../../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+<script type="text/javascript" src="../../static/js/jquery-3.1.0.min.js" th:src="@{js/jquery-3.1.0.min.js}"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<style type="text/css">
+.form-login {
+	max-width: 500px;
+	margin: auto;
+	border: 2px solid #CCCCCC;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.navbar-custom-color {
+	background-color: #4CAF50;
+}
+
+.nav.navbar-nav li a {
+	color: white !important;
+}
+
+.nav.navbar-nav li a:HOVER {
+	color: black !important;
+}
+.badge{
+background-color: #b9192f;
+}
+.icon-bar {
+	background-color: white !important;
+}
+</style>
+</head>
+<body>
+<div
+		class="navbar navbar-default navbar-static-top navbar-custom-color"
+		role="navigation" th:fragment="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand" style="color: white;">Online
+					Auction</a>
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">People</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Auction<span class="caret"></span></a>
+						<ul class="dropdown-menu navbar-custom-color">
+							<li><a href="#">Completed <span class="badge">2</span></a></li>
+							<li><a href="#">All</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Requests <span class="badge">10</span></a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Current <span class="badge">3</span></a></li>
+						</ul></li>
+					<li><a href="#">Reports</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> &nbsp;Login</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
