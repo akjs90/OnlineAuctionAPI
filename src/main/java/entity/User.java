@@ -20,7 +20,7 @@ public class User implements Serializable {
 	private int userId;
 
 	private String address;
-
+	private String email;
 	private String name;
 
 	private String username;
@@ -179,6 +179,14 @@ public class User implements Serializable {
 
 	public void setEnabled(String enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

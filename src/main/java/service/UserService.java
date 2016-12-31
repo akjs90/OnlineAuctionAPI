@@ -21,6 +21,7 @@ public class UserService {
 	}
 	
 	public boolean registerUser(User user){
+		user.setEnabled("inactive");
 		user.setRole(getUserRoleByName("ROLE_USER"));
 		User u=userRepo.save(user);
 		if(u!=null)

@@ -15,12 +15,12 @@ import service.UserService;
 public class HomeController {
 	@Autowired
 	UserService service;
-	@RequestMapping(value = "r",method=RequestMethod.GET)
+	@RequestMapping(value = {"r","register"},method=RequestMethod.GET)
 	public String register(@ModelAttribute("reg_user") User u) {
 		return "register";
 	}
 	
-	@RequestMapping(value = "r",method=RequestMethod.POST)
+	@RequestMapping(value = {"r","register"},method=RequestMethod.POST)
 	public String registerUser(@ModelAttribute("reg_user") User u) {
 		service.registerUser(u);
 		return "redirect:/r";
