@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head th:fragment="head">
-<meta charset="ISO-8859-1"/>
+<meta charset="ISO-8859-1" />
 <title>Online Auction</title>
 
-<link rel="stylesheet" type="text/css"	href="../../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
-<script type="text/javascript" src="../../static/js/jquery-3.1.0.min.js" th:src="@{js/jquery-3.1.0.min.js}"></script>
-<script type="text/javascript" src="../../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<link rel="stylesheet" type="text/css"
+	href="../../static/css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" />
+<script type="text/javascript" src="../../static/js/jquery-3.1.0.min.js"
+	th:src="@{js/jquery-3.1.0.min.js}"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.min.js"
+	th:src="@{js/bootstrap.min.js}"></script>
 <style type="text/css">
 .form-login {
 	max-width: 500px;
@@ -27,16 +31,18 @@
 .nav.navbar-nav li a:HOVER {
 	color: black !important;
 }
-.badge{
-background-color: #b9192f;
+
+.badge {
+	background-color: #b9192f;
 }
+
 .icon-bar {
 	background-color: white !important;
 }
 </style>
 </head>
 <body>
-<div
+	<div
 		class="navbar navbar-default navbar-static-top navbar-custom-color"
 		role="navigation" th:fragment="navigation">
 		<div class="container">
@@ -68,7 +74,16 @@ background-color: #b9192f;
 					<li><a href="#">Reports</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> &nbsp;Login</a></li>
+					<li th:if="${user_info.username==null}"><a href="#"><span
+							class="glyphicon glyphicon-log-in"></span> &nbsp;Login</a></li>
+					<li th:if="${user_info.username!=null}" class="dropdown"><a
+						href="#" class="dropdown-toggle" data-toggle="dropdown"
+						role="button" aria-haspopup="true" aria-expanded="false">Hello,
+							<span th:text="${user_info.username}"></span><span class="caret"></span>
+					</a>
+						<ul class="dropdown-menu navbar-custom-color">
+							<li><a href="logout">Logout</a></li>
+						</ul></li>
 				</ul>
 			</div>
 		</div>

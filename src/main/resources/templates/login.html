@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" th:replace="fragments/header::head"/>
+<meta charset="UTF-8" th:replace="fragments/header::head" />
 <title>Online Auction</title>
 <link rel="stylesheet" type="text/css"
 	href="../static/css/bootstrap.min.css" />
@@ -11,31 +11,36 @@
 .form-login {
 	max-width: 500px;
 	margin: auto;
-	border:2px solid #CCCCCC;
+	border: 2px solid #CCCCCC;
 	padding: 20px;
 	border-radius: 10px;
 }
-
 </style>
 </head>
 <body>
 	<!-- <h1>Welcome to Online Auction</h1> -->
 
-<div th:replace="fragments/header::navigation"></div>
-	<div class="col-sm-8 col-sm-offset-2 container"  >
-		<form th:action="@{login}"  method="post"
-			class="form-login">
+	<div th:replace="fragments/header::navigation"></div>
+	<div class="col-sm-8 col-sm-offset-2 container">
+		<form th:action="@{login}" method="post" class="form-login"
+			th:object="${user_info}">
+			<div class="alert alert-danger" th:if="${login_status!=null}">
+				<strong>Error!</strong> Invalid username/password.
+			</div>
 			<div style="text-align: center;">
-				<img alt="avatar" src="../static/images/avatar.png" th:src="@{/images/avatar.png}"
-					class="img-circle" style="width: 40%;"/>
+				<img alt="avatar" src="../static/images/avatar.png"
+					th:src="@{/images/avatar.png}" class="img-circle"
+					style="width: 40%;" />
 			</div>
 			<div class="form-group">
 				<label>Username</label> <input type="text" name="username"
-					placeholder="Enter Username" class="form-control" />
+					placeholder="Enter Username" class="form-control"
+					th:field="*{username}" required="required"/>
 			</div>
 			<div class="form-group">
 				<label>Password</label> <input type="password" name="password"
-					class="form-control" placeholder="Enter Password" />
+					class="form-control" placeholder="Enter Password"
+					th:field="*{password}" required="required"/>
 			</div>
 			<div class="form-group">
 				<input type="submit" class="btn btn-block" value="Login"
@@ -50,8 +55,10 @@
 					</div>
 				</div>
 			</div>
-			<hr/>
-			<h5>New to Auction? <a th:href="@{register}">Register Here</a></h5>
+			<hr />
+			<h5>
+				New to Auction? <a th:href="@{register}">Register Here</a>
+			</h5>
 		</form>
 	</div>
 
