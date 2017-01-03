@@ -8,4 +8,6 @@ import entity.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
 	User getByUsernameAndPassword(String username, String password);
+
+	User findByUsername(String username);
 }

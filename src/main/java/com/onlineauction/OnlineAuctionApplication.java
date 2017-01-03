@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EntityScan(basePackages={"entity"})
-@ComponentScan(basePackages={"controller","service"})
+@ComponentScan(basePackages={"controller","service","security"})
 @EnableJpaRepositories(basePackages="repository")
 public class OnlineAuctionApplication {
 
