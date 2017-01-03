@@ -24,8 +24,11 @@
 	<div class="col-sm-8 col-sm-offset-2 container">
 		<form th:action="@{login}" method="post" class="form-login"
 			th:object="${user_info}">
-			<div class="alert alert-danger" th:if="${login_status!=null}">
+			<div class="alert alert-danger" th:if="${param.error}">
 				<strong>Error!</strong> Invalid username/password.
+			</div>
+			<div class="alert alert-success" th:if="${param.logout}">
+				<strong>Success!</strong> You have been logged out.
 			</div>
 			<div style="text-align: center;">
 				<img alt="avatar" src="../static/images/avatar.png"

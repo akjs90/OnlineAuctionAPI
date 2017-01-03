@@ -54,6 +54,7 @@ public class HomeController {
 		}
 		System.out.println("User " + u.getEmail());
 		user.setRole(u.getRole().getRole());
+		System.out.println("Hello");
 		return "redirect:/welcome";
 	}
 
@@ -64,6 +65,11 @@ public class HomeController {
 	@RequestMapping("logout")
 	public String logout(SessionStatus session) {
 		session.setComplete();
+		System.out.println("Logout sessin");
 		return "redirect:/login";
+	}
+	@RequestMapping("403")
+	public String acessDeny(SessionStatus session) {
+		return "error/403";
 	}
 }

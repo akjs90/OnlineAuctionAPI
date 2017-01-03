@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses=CustomUserDetailsService.class)
@@ -17,12 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		     .antMatchers("/welcome").access("hasRole('ROLE_ADMIN')")
+		     .antMatchers("/welcome").hasAnyRole("USER","ADMIN")
+		     .antMatchers("/r").access("hasRole('ROLE_USER')")
 		     .and()
 		     .formLogin().loginPage("/login")
-		     .usernameParameter("username").passwordParameter("password")
+		     .usernameParameter("username").passwordParameter("password").successForwardUrl("/welcome")
 		     .and()
-		     .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout");
+		     .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
+	http.exceptionHandling().accessDeniedPage("/403");
 	}
 
 	@Autowired
