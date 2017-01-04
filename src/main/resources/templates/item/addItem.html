@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title>Online Auction</title>
+<link rel="stylesheet" type="text/css"
+	href="../../static/css/bootstrap.min.css" />
+<script type="text/javascript" src="../../static/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.min.js"></script>
+<style type="text/css">
+.form-style {
+	max-width: 500px;
+	margin: auto;
+	border: 2px solid #CCCCCC;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<form th:action="@{/addItem}" method="post" class="form-style">
+			<div style="text-align: center;">
+				<img alt="item" src="../../static/images/item.jpg"
+					th:src="@{/images/item.jpg}" class="img-circle" style="width: 40%;" />
+			</div>
+			<div class="form-group">
+				<label>Name</label> <input type="text" class="form-control"
+					placeholder="Enter Item Name" required="required"
+					th:field="*{name}" />
+			</div>
+			<div class="form-group">
+				<label>Amount</label>
+				<div class="input-group">
+					<div class="input-group-addon"
+						style="background-color: #4CAF50; color: white;">Rs</div>
+					<input type="number" class="form-control" id="exampleInputAmount"
+						placeholder="Amount">
+					<div class="input-group-addon"
+						style="background-color: #4CAF50; color: white;">.00</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-success form-control">Next<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> </button>
+		</form>
+	</div>
+
+</body>
+</html>
