@@ -15,14 +15,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
+	@Autowired
+	private CustomAuthenticationSuccessHandler handler;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		     .antMatchers("/welcome").hasAnyRole("USER","ADMIN")
 		     .antMatchers("/r").access("hasRole('ROLE_USER')")
 		     .and()
-		     .formLogin().loginPage("/login")
-		     .usernameParameter("username").passwordParameter("password").successForwardUrl("/welcome")
+		     .formLogin().loginPage("/login").successHandler(handler)
+		     .usernameParameter("username").passwordParameter("password")
 		     .and()
 		     .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
 	http.exceptionHandling().accessDeniedPage("/403");

@@ -39,6 +39,9 @@ public class HomeController {
 
 	@RequestMapping(value = "login")
 	public String login(@ModelAttribute("user_info") UserWrapper user) {
+		System.out.println("here i am in login");
+		if(user.getUsername()!=null)
+			return "redirect:/welcome";
 		return "login";
 	}
 
@@ -60,6 +63,7 @@ public class HomeController {
 
 	@RequestMapping("welcome")
 	public String welcomePage() {
+		System.out.println("Welcome fro");
 		return "user/userhome";
 	}
 	@RequestMapping("logout")
