@@ -1,6 +1,7 @@
 package security;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,10 @@ public class CustomAuthenticationSuccessHandler implements
 		HttpSession session=request.getSession();
 		UserWrapper userWrapper=new UserWrapper();
 		User user=(User) auth.getPrincipal();
+		Object[] authorities=  user.getAuthorities().toArray();
+		System.out.println(Arrays.toString(authorities));
 		userWrapper.setUsername(user.getUsername());
+		userWrapper.setRole(authorities[0].toString());
 		System.out.println("Custm redirect: "+userWrapper.getUsername());
 		session.setAttribute("user_info", userWrapper);
 		redirectStrategy.sendRedirect(request, response, "/welcome");
