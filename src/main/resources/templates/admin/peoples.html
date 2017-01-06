@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="www.thymeleaf.org">
 <head th:replace="fragments/header::head">
-<meta charset="ISO-8859-1"/>
+<meta charset="ISO-8859-1" />
 <title>Insert title here</title>
 </head>
 <body>
+	<div th:replace="fragments/header::navigation"></div>
+	<div class="container">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Sr. No.</th>
+					<th>Name</th>
+					<th>Username</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="person,status:${user_list.content}">
+					<td th:text="${status.count}">1</td>
+					<td th:text="${person.name}">Name</td>
+					<td th:text="${person.username}">user</td>
+					<td th:text="${#strings.toUpperCase(person.enabled)}">active</td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
 
 </body>
 </html>

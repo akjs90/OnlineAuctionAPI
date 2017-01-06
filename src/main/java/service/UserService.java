@@ -1,6 +1,8 @@
 package service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import repository.UserRepository;
@@ -41,5 +43,9 @@ public class UserService {
 	
 	public User findUserByUsername(String username){
 		return userRepo.findByUsername(username);
+	}
+	
+	public Page<User> findAllUsers(Pageable p){
+		return userRepo.findAll(p);
 	}
 }
