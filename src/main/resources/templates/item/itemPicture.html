@@ -36,12 +36,46 @@
 	background-color: white !important;
 }
 </style>
-<script type="text/javascript">
-$('#myModal').on('shown.bs.modal', function () {
-	  $('#myInput').focus();
-	});
-	
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/ 
+var selDiv="";
+document.addEventListener("DOMContentLoaded", init, false);
 
+function init(){
+	console.log("Entered init");
+	document.querySelector('#MyFile').addEventListener('change',handleFileSelect,false);
+	selDiv = document.querySelector('#selectedFiles');
+}
+
+function handleFileSelect(e){
+	console.log("File select entered");
+	if(!e.target.files || !window.FileReader) return;
+	selDiv.innerHTML="";
+	
+	var files = e.target.files;
+	var fileArr = Array.prototype.slice.call(files);
+	console.log("array"+fileArr);
+	fileArr.forEach(function(f){
+		if(!f.type.match("image.*")){
+			return;
+		}
+		var reader = new FileReader();
+		reader.onload = function(e){
+		var html = "<img src=\""+e.target.result+"\">"+f.name+"<br clear=\"left\"/>";	
+		 selDiv.innerHTML += html;
+		}
+	}); 
+	
+	
+	/*console.log("length"+files.length);
+	for(var i=0;i < files.length;i++){
+		var f = files[i];
+		console.log("for loop entered");
+        selDiv.innerHTML += f.name + "<br/>";
+	}*/
+	
+}
+/*]]>*/
 </script>
 </head>
 <body>
@@ -49,34 +83,17 @@ $('#myModal').on('shown.bs.modal', function () {
 	<div class="container">
 		<form action="" method="post" enctype="multipart/form-data"
 			class="form-login">
-			
-				<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>Add Images.</button>
-			
+			<div class="form-group">
+				<button type="button" class="btn btn-success form-control" style="cursor:pointer" onclick="document.getElementById('MyFile').click();"><span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>Add Images</button>
+			       <input type="file"  multiple="multiple" id ="MyFile" accept="image/*" style="display:none"/>
+			  </div>
+			 <div id="selectedFiles"></div>
+			     <button type="submit" class="btn btn-success form-control">Save</button>
 		</form>
 
 
 	</div>
-<!-- Modal -->	
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Select Images </h4>
-      </div>
-      <div class="modal-body">
-      <form action="" method="post" enctype="multipart/form-data" >
-      <button type="button" id="uploadMyFile" class="btn btn-success form-control" style="cursor:pointer" onclick="document.getElementById('MyFile').click();">Choose File</button>
-      <input type="file"  multiple="multiple" id ="MyFile" name="MyFile" style="display:none"/>
-      
-      </form>
-      
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success">Add</button>
-      </div>
-    </div>
-  </div>
-</div>	
+
 	<!-- https://www.raymondcamden.com/2013/09/10/Adding-a-file-display-list-to-a-multifile-upload-HTML-control -->
 </body>
 </html>
