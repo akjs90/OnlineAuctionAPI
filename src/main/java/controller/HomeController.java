@@ -39,6 +39,9 @@ public class HomeController {
 
 	@RequestMapping(value = "login")
 	public String login(@ModelAttribute("user_info") UserWrapper user) {
+		System.out.println("here i am in login");
+		if(user.getUsername()!=null)
+			return "redirect:/welcome";
 		return "login";
 	}
 
@@ -54,16 +57,23 @@ public class HomeController {
 		}
 		System.out.println("User " + u.getEmail());
 		user.setRole(u.getRole().getRole());
+		System.out.println("Hello");
 		return "redirect:/welcome";
 	}
 
 	@RequestMapping("welcome")
 	public String welcomePage() {
+		System.out.println("Welcome fro");
 		return "user/userhome";
 	}
 	@RequestMapping("logout")
 	public String logout(SessionStatus session) {
 		session.setComplete();
+		System.out.println("Logout sessin");
 		return "redirect:/login";
+	}
+	@RequestMapping("403")
+	public String acessDeny(SessionStatus session) {
+		return "error/403";
 	}
 }
