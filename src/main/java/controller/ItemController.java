@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,9 +43,10 @@ public class ItemController {
 	}
 	
 	@RequestMapping(value="/saveItem",method=RequestMethod.POST)
-	public @ResponseBody String saveItemAndPictures(@RequestBody MultipartFile[] files,HttpSession session){
-		System.out.println("Entering---------------");
+	public @ResponseBody String saveItemAndPictures(@RequestParam(value="files") MultipartFile[] files,HttpSession session){
+		System.out.println("Entering--------------- ");
 		Item item = (Item) session.getAttribute("item");
+		item.setRegistrationDate(new Date());
 		Item savedItem = service.createItem(item);
 		for(int i= 0;i<files.length;i++){
 			try{
