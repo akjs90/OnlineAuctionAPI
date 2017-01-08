@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
-<head th:replace="fragments/header::head">
-<meta charset="ISO-8859-1" />
-<title>Insert title here</title>
+<head>
+<meta charset="ISO-8859-1" th:replace="fragments/header::head" />
+<style type="text/css">
+.pagination>li>a, .pagination>li>span {
+	color: #4caf50;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover,
+	.pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover
+	{
+	background-color: #4caf50;
+	border-color: #4caf50;
+}
+</style>
 </head>
 <body>
 	<div th:replace="fragments/header::navigation"></div>
@@ -16,7 +27,7 @@
 					<th>Status</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody th:if="${user_list.hasContent()}">
 				<tr th:each="person,status:${user_list.content}">
 					<td th:text="${status.count}">1</td>
 					<td th:text="${person.name}">Name</td>
@@ -26,6 +37,21 @@
 			</tbody>
 
 		</table>
+		<p th:text="${_csrf.parameterName}"></p>
+		<p th:text="${_csrf.token}"></p>
+		<div class="text-center">
+			<ul class="pagination">
+				<li th:class="${!user_list.hasPrevious()}?disabled"><a href="#"
+					th:href="${!user_list.hasPrevious()}?@{#}:@{?p=__${user_list.number}__}">&laquo;</a></li>
+
+				<li th:each="i:${#numbers.sequence(1,user_list.totalPages)}"
+					th:class="${user_list.number+1==i}?active"><a href="#"
+					th:href="@{?p=__${i}__}" th:text="${i}">1</a></li>
+
+				<li th:class="${!user_list.hasNext()}?disabled"><a href="#"
+					th:href="${!user_list.hasNext()}?@{#}:@{?p=__${user_list.number+2}__}">&raquo;</a></li>
+			</ul>
+		</div>
 	</div>
 
 </body>
