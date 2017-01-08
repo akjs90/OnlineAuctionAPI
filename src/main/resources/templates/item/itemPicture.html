@@ -2,6 +2,8 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Online Auction</title>
 <link rel="stylesheet" type="text/css"
 	href="/css/bootstrap.min.css" />
@@ -58,6 +60,9 @@ display:none;
 </style>
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/ 
+           
+
+
 var selDiv="";
 var selFile = [];
 document.addEventListener("DOMContentLoaded", init, false);
@@ -116,6 +121,14 @@ function removeImage(ele,fileName){
 }
 
 function sendData(){
+	var token = $("meta[name='_csrf']").attr("content"); 
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$.ajaxSetup({
+	    beforeSend: function(xhr) {
+	        xhr.setRequestHeader(header, token);
+	    }
+	});
+	
 	var selectedFiles =[];
 	for(var i= 0; i < selFile.length;i++){
 		selectedFiles.push(selFile[i].file);
@@ -124,6 +137,7 @@ function sendData(){
 		type:"POST",
 		url:"saveItem",
 		data:selectedFiles,
+			
 		success:function(response){
 			window.location.href= "user/home.html";
 		},
