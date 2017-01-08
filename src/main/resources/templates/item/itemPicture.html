@@ -35,35 +35,58 @@
 .icon-bar {
 	background-color: white !important;
 }
+
+.img-style{
+height:160px;
+width:185px;
+}
+
+div.show-image:hover img{
+opacity:0.5;
+}
+
+div.show-image:hover button{
+display:-webkit-inline-box;
+}
+div.show-image button{
+ position: relative;
+left: -40px;
+top:-60px;
+display:none;
+}
+
 </style>
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/ 
 var selDiv="";
+var selFile = [];
 document.addEventListener("DOMContentLoaded", init, false);
 
 function init(){
-	console.log("Entered init");
 	document.querySelector('#MyFile').addEventListener('change',handleFileSelect,false);
 	selDiv = document.querySelector('#selectedFiles');
 }
 
 function handleFileSelect(e){
-	console.log("File select entered");
 	if(!e.target.files || !window.FileReader) return;
-	selDiv.innerHTML="";
 	
 	var files = e.target.files;
 	var fileArr = Array.prototype.slice.call(files);
-	console.log("array"+fileArr);
-	fileArr.forEach(function(f){
+	fileArr.forEach(function(f,idx){
 		if(!f.type.match("image.*")){
 			return;
 		}
+		
+		selFile.push({id:idx, file:f});
 		var reader = new FileReader();
 		reader.onload = function(e){
-		var html = "<img src=\""+e.target.result+"\">"+f.name+"<br clear=\"left\"/>";	
+		var html = "<div class='show-image' ><img src=\""+e.target.result+"\" class='img-thumbnail img-style ' >"+
+		"<button type='button'class='btn btn-danger' onclick='removeImage(this,\""+f.name+"\")'>X</button>"+f.name+
+		"</div>";	
 		 selDiv.innerHTML += html;
 		}
+		reader.readAsDataURL(f); 
+		
 	}); 
 	
 	
@@ -74,6 +97,40 @@ function handleFileSelect(e){
         selDiv.innerHTML += f.name + "<br/>";
 	}*/
 	
+}
+function removeImage(ele,fileName){
+	 var idx=-1;
+	 for(var i= 0; i < selFile.length;i++){
+	if(selFile[i].file.name === fileName ){
+		idx = i;
+		break;
+	}
+	} 
+	 selFile.splice(idx, 1); 
+	ele.parentElement.style.display='none';
+	/* console.log("new selected files array");
+	 for(var i= 0; i < selFile.length;i++){
+		console.log(selFile[i].file.name);	 
+	 } */
+	return false;
+}
+
+function sendData(){
+	var selectedFiles =[];
+	for(var i= 0; i < selFile.length;i++){
+		selectedFiles.push(selFile[i].file);
+	}
+	$.ajax({
+		type:"POST",
+		url:"saveItem",
+		data:selectedFiles,
+		success:function(response){
+			window.location.href= "user/home.html";
+		},
+		error:function(e){
+			alert('Error '+e);
+		}
+	});
 }
 /*]]>*/
 </script>
@@ -88,7 +145,7 @@ function handleFileSelect(e){
 			       <input type="file"  multiple="multiple" id ="MyFile" accept="image/*" style="display:none"/>
 			  </div>
 			 <div id="selectedFiles"></div>
-			     <button type="submit" class="btn btn-success form-control">Save</button>
+			     <button type="button" class="btn btn-success form-control" onclick="sendData()">Save</button>
 		</form>
 
 
