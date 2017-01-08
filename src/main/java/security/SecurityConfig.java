@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private CustomAuthenticationSuccessHandler handler;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.authorizeRequests().antMatchers("/saveItem").permitAll()
 		     .antMatchers("/welcome").authenticated()
 		     .antMatchers("/admin/**").hasRole("ADMIN")
 		     .antMatchers("/r").access("hasRole('ROLE_USER')")
