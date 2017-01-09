@@ -25,7 +25,7 @@ public class User implements Serializable {
 
 	private String username;
 	private String password;
-	private String enabled;
+	private boolean enabled=false;
 	// bi-directional many-to-one association to Auction
 	@OneToMany(mappedBy = "user")
 	private List<Auction> auctions;
@@ -173,11 +173,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getEnabled() {
+	public boolean isEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(String enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 

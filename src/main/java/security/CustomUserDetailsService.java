@@ -40,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getRole()));
 		
 		org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
-				user.getUsername(), user.getPassword(), user.getEnabled().equals("active") ? true : false, true, true, true,
+				user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
 				grantedAuthorities);
 		System.out.println(userDetails.isEnabled());
 		return userDetails;

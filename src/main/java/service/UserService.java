@@ -25,7 +25,6 @@ public class UserService {
 	}
 
 	public boolean registerUser(User user) {
-		user.setEnabled("inactive");
 		user.setRole(getUserRoleByName("ROLE_USER"));
 		User u = userRepo.save(user);
 		if (u != null)
@@ -47,5 +46,10 @@ public class UserService {
 	
 	public Page<User> findAllUsers(Pageable p){
 		return userRepo.findAll(p);
+	}
+	
+	public boolean toggleStatus(Integer id,String status){
+		userRepo.toogleStatus(id, status);
+		return true;
 	}
 }
