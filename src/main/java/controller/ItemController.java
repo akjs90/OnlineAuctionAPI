@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import entity.Item;
 import service.ItemService;
@@ -43,9 +45,22 @@ public class ItemController {
 	}
 	
 	@RequestMapping(value="/saveItem",method=RequestMethod.POST)
-	public @ResponseBody String saveItemAndPictures(@RequestParam(value="files") MultipartFile[] files,HttpSession session){
+	public @ResponseBody String saveItemAndPictures(@RequestParam("files")MultipartFile[] files,HttpSession session){
 		System.out.println("Entering--------------- ");
-		Item item = (Item) session.getAttribute("item");
+		System.out.println(files.length);
+		for(MultipartFile file:files){
+			System.out.println(file.getOriginalFilename());	
+		}
+		
+		
+		/*Iterator<String> itr =  request.getFileNames();
+		if(itr.hasNext()){
+		 MultipartFile mpf = request.getFile(itr.next());
+	     System.out.println(mpf.getOriginalFilename() +" uploaded!");}
+		else
+			System.out.println("itr null");
+		*/
+		/*Item item = (Item) session.getAttribute("item");
 		item.setRegistrationDate(new Date());
 		Item savedItem = service.createItem(item);
 		for(int i= 0;i<files.length;i++){
@@ -55,7 +70,7 @@ public class ItemController {
 			catch(IllegalStateException | IOException e){
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		return "success";
 	} 
