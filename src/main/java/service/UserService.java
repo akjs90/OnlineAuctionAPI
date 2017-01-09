@@ -48,8 +48,9 @@ public class UserService {
 		return userRepo.findAll(p);
 	}
 	
-	public boolean toggleStatus(Integer id,String status){
-		userRepo.toogleStatus(id, status);
-		return true;
+	public boolean toggleStatus(int id){
+		if(userRepo.toogleStatus(id)==1)
+			return true;
+		return false;
 	}
 }

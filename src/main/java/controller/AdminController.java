@@ -7,8 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import entity.User;
@@ -23,13 +26,21 @@ public class AdminController {
 	UserService userService;
 
 	@RequestMapping("people")
-	public String getPeopleList(@RequestParam(name="p",defaultValue="1")Integer page,@RequestParam(name="l",defaultValue="10")Integer size,ModelMap map) {
-		map.addAttribute("user_list", userService.findAllUsers(new PageRequest(page-1, size)));
+	public String getPeopleList(
+			@RequestParam(name = "p", defaultValue = "1") Integer page,
+			@RequestParam(name = "l", defaultValue = "10") Integer size,
+			ModelMap map) {
+		map.addAttribute("user_list",
+				userService.findAllUsers(new PageRequest(page - 1, size)));
 		return "admin/peoples";
 	}
-	
-	public ResponseEntity<String> toggleStatus(){
-		return new ResponseEntity<String>(HttpStatus.OK);
-		
+
+	@RequestMapping(value = "changestatus/{id}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> toggleStatus(
+			@PathVariable(required = true, value = "id") int id) {
+		if (userService.toggleStatus(id))
+			return new ResponseEntity<String>(HttpStatus.OK);
+		return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+
 	}
 }
