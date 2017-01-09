@@ -2,6 +2,8 @@
 <html xmlns:th="www.thymeleaf.org">
 <head th:fragment="head">
 <meta charset="ISO-8859-1" />
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Online Auction</title>
 
 <link rel="stylesheet" type="text/css"

@@ -3,12 +3,15 @@ package controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import entity.User;
 import entity.UserWrapper;
 import service.UserService;
 
@@ -23,5 +26,10 @@ public class AdminController {
 	public String getPeopleList(@RequestParam(name="p",defaultValue="1")Integer page,@RequestParam(name="l",defaultValue="10")Integer size,ModelMap map) {
 		map.addAttribute("user_list", userService.findAllUsers(new PageRequest(page-1, size)));
 		return "admin/peoples";
+	}
+	
+	public ResponseEntity<String> toggleStatus(){
+		return new ResponseEntity<String>(HttpStatus.OK);
+		
 	}
 }
