@@ -107,6 +107,9 @@ function removeImage(ele,fileName){
 	return false;
 }
 function sendData(){
+	console.log("here");
+	 fd = new FormData();
+	
 	var token = $("meta[name='_csrf']").attr("content"); 
 	var header = $("meta[name='_csrf_header']").attr("content");
 	$.ajaxSetup({
@@ -114,18 +117,19 @@ function sendData(){
 	        xhr.setRequestHeader(header, token);
 	    }
 	});
-	
-	var selectedFiles =[];
+		
 	for(var i= 0; i < selFile.length;i++){
-		selectedFiles.push(selFile[i].file);
+			fd.append('files',selFile[i].file);
 	}
+	
 	$.ajax({
 		type:"POST",
-		url:"saveItem",
-		data:{files:selectedFiles},
-			
+		url:"/saveItem",
+		data:fd,
+		processData:false,
+		contentType:false,
 		success:function(response){
-			window.location.href= "user/home.html";
+		//	window.location.href= "user/home.html";
 		},
 		error:function(e){
 			alert('Error '+e);
