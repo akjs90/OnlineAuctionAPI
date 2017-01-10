@@ -1,9 +1,12 @@
 package controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,5 +45,21 @@ public class AdminController {
 			return new ResponseEntity<String>(HttpStatus.OK);
 		return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 
+	}
+
+	@RequestMapping(value = "search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<String> getData(
+			@RequestParam(value = "c", required = false, defaultValue = "username") String criteria,
+			@RequestParam("t") String term) {
+		List<String> data=null;
+		if (criteria.equalsIgnoreCase("name")) {
+			data=userService.getByNameData(term);
+
+		} else if (criteria.equalsIgnoreCase("email")) {
+			data=userService.getByEmailData(term);
+		} else {
+			data=userService.getByUserNameData(term);
+		}
+		return data;
 	}
 }

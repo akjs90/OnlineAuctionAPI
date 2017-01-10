@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1" th:replace="fragments/header::head" />
-<style type="text/css">
+<style type="text/css" th:inline="text">
 .pagination>li>a, .pagination>li>span {
 	color: #4caf50;
 }
@@ -26,7 +26,13 @@
 	transition: left 0.7s;
 	-webkit-transition: left 0.7s;
 }
+
+.ui-autocomplete-loading {
+    background: white url(/images/ui-anim_basic_16x16.gif) right center no-repeat;
+  }
 </style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link
 	href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
 	rel="stylesheet" />
@@ -45,7 +51,7 @@
 		}
 		p = new People();
 	});
-	
+
 	var toogle = function(id) {
 		$.ajax({
 			url : "./changestatus/" + id,
@@ -55,14 +61,60 @@
 			}
 		});
 	};
-	
-	
-	
+	$(document).ready(function(e) {
+		$('.search-panel .dropdown-menu').find('a').click(function(e) {
+			e.preventDefault();
+			var param = $(this).attr("href").replace("#", "");
+			var concept = $(this).text();
+			$('.search-panel span#search_concept').text(concept);
+			$('.input-group #search_param').val(param);
+		});
+		$('#query').autocomplete({
+			autoFocus:true,
+			minLength:2,
+			delay:500,
+			source:function( request, response ) {
+				var c=$('.input-group #search_param').val();
+		        $.ajax( {
+		            url: "search",
+		            dataType: "json",
+		            data: {
+		              "t": request.term,
+		              "c":c
+		            },
+		            success: function( data ) {
+		            	//alert("data");
+		              response(data) ;
+		            }
+		            
+		          } );
+		        }
+		});
+	});
 </script>
 </head>
 <body>
 	<div th:replace="fragments/header::navigation"></div>
 	<div class="container">
+		<div class="input-group">
+			<div class="input-group-btn search-panel">
+				<button type="button" class="btn btn-default dropdown-toggle"
+					data-toggle="dropdown">
+					<span id="search_concept">Filter by</span> <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#username">By Username</a></li>
+					<li><a href="#name">By Name</a></li>
+					<li><a href="#email">By Email</a></li>
+				</ul>
+			</div>
+			<input type="hidden" name="search_param" value="all" id="search_param" />
+			<input id="query" type="text" class="form-control" name="x" placeholder="Search term..." autocomplete="on"/>
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+			</span>
+		</div>
+
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -78,10 +130,9 @@
 					<td th:text="${person.name}">Name</td>
 					<td th:text="${person.username}">user</td>
 					<td><input type="checkbox"
-						th:onchange="${'toogle('+person.userId+')'}"
-						data-toggle="toggle" data-on="Active" data-off="Inactive"
-						data-onstyle="success" data-style="ios slow"
-						th:checked="${person.enabled}" /></td>
+						th:onchange="${'toogle('+person.userId+')'}" data-toggle="toggle"
+						data-on="Active" data-off="Inactive" data-onstyle="success"
+						data-style="ios slow" th:checked="${person.enabled}" /></td>
 				</tr>
 			</tbody>
 
