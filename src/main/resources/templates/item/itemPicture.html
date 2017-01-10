@@ -128,11 +128,12 @@ function sendData(){
 		data:fd,
 		processData:false,
 		contentType:false,
-		success:function(response){
-		//	window.location.href= "user/home.html";
+		success:function(data,status){
+		window.location.href= "/home";
+		
 		},
-		error:function(e){
-			alert('Error '+e);
+		error:function(data,status){
+			alert('Error '+status);
 		}
 	});
 }
