@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,8 +59,9 @@ public class ItemController {
 				Files.copy(files[i].getInputStream(),itemLocal.resolve("item"+savedItem.getItemId()+"_"+(i+1)));
 				ItemPicture itmPic = new ItemPicture();
 				itmPic.setItem(savedItem);
-				String picUrl=itemLocal.toString()+"/"+"item"+savedItem.getItemId()+"_"+(i+1);
+				String picUrl=itemLocal.toString()+File.separator+"item"+savedItem.getItemId()+"_"+(i+1);
 				itmPic.setPictureUrl(picUrl);
+				service.addPicture(itmPic);
 			}
 			catch(IllegalStateException | IOException e){
 				e.printStackTrace();
