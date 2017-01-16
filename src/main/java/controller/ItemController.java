@@ -18,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import entity.Item;
 import entity.ItemPicture;
+import entity.UserWrapper;
 import service.ItemService;
 
 @Controller
+@RequestMapping("/item")
+@SessionAttributes(value = "user_info", types = { UserWrapper.class })
 public class ItemController {
 	
 	@Autowired
@@ -32,19 +36,19 @@ public class ItemController {
 	
 	private final Path rootLoc = Paths.get("uploadedImages");
 	
-	@RequestMapping("/addItem")
+	@RequestMapping("/add")
 	public String showForm(@ModelAttribute("item") Item item){
 		return "item/addItem";
 	}
 
-	@RequestMapping(value="/addItem",method =RequestMethod.POST)
+	@RequestMapping(value="/add",method =RequestMethod.POST)
 	public String createItem(Item item,HttpSession session){
 		System.out.println("Item received"+item.getName());
 		session.setAttribute("item", item);
 		return "item/itemPicture";
 	}
 	
-	@RequestMapping(value="/saveItem",method=RequestMethod.POST)
+	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<String> saveItemAndPictures(@RequestParam("files")MultipartFile[] files,HttpSession session){
 			
 		Item item = (Item) session.getAttribute("item");

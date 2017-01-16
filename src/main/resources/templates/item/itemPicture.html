@@ -124,12 +124,12 @@ function sendData(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/saveItem",
+		url:"/item/save",
 		data:fd,
 		processData:false,
 		contentType:false,
 		success:function(data,status){
-		window.location.href= "/home";
+		window.location.href= "/item/home";
 		
 		},
 		error:function(data,status){
@@ -141,7 +141,7 @@ function sendData(){
 </script>
 </head>
 <body>
-<!--  <div th:replace="fragments/header::navigation"></div> --> 
+  <div th:replace="fragments/header::navigation"></div> 
 	<div class="container">
 		<form action="" method="post" enctype="multipart/form-data"
 			class="form-login">

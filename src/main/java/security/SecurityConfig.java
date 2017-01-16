@@ -19,10 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private CustomAuthenticationSuccessHandler handler;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/saveItem").permitAll()
+		http.authorizeRequests()
 		     .antMatchers("/welcome").authenticated()
 		     .antMatchers("/admin/**").hasRole("ADMIN")
 		     .antMatchers("/r").access("hasRole('ROLE_USER')")
+		     .antMatchers("/item/**").hasRole("USER")
 		     .and()
 		     .formLogin().loginPage("/login").successHandler(handler)
 		     .usernameParameter("username").passwordParameter("password")
