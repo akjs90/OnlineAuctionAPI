@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,4 +55,16 @@ public class UserService {
 			return true;
 		return false;
 	}
+	
+	public List<String> getByNameData(String name){
+		return userRepo.getByName(name);
+	}
+	
+	public List<String> getByUserNameData(String username){
+		return userRepo.getByUserName(username);
+	}
+	public List<String> getByEmailData(String email){
+		return userRepo.getByEmail(email);
+	}
+	
 }
