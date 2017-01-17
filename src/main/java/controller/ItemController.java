@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import entity.Auction;
 import entity.Item;
 import entity.ItemPicture;
+import entity.User;
 import entity.UserWrapper;
 import service.ItemService;
+import service.UserService;
 
 @Controller
 @RequestMapping("/item")
@@ -33,6 +36,8 @@ public class ItemController {
 	
 	@Autowired
 	ItemService service;
+	@Autowired
+	UserService usrService;
 	
 	private final Path rootLoc = Paths.get("uploadedImages");
 	
@@ -53,8 +58,14 @@ public class ItemController {
 			
 		Item item = (Item) session.getAttribute("item");
 		item.setRegistrationDate(new Date());
-		Item savedItem = service.createItem(item);
-		if(savedItem == null)
+		
+		UserWrapper uw = (UserWrapper) session.getAttribute("user_info");
+		User user = usrService.findUserByUsername(uw.getUsername());
+		
+		Item savedItem = service.createItem(item, user);
+
+		
+		if(savedItem == null )
 			return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
 		
 		for(int i= 0;i<files.length;i++){
@@ -76,8 +87,4 @@ public class ItemController {
 	return(new ResponseEntity<>(HttpStatus.OK));
 	} 
 	
-	@RequestMapping(value="/home")
-	public String showHome(){
-		return "user/home";
-	}
 }
