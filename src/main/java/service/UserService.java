@@ -82,5 +82,12 @@ public class UserService {
 		return list;
 
 	}
+	
+	public Object[] getUserInfoByUsername(String uname){
+		Object[] obj=userRepo.getUserInfoByUsername(uname);
+		if(null==obj)
+			return null;
+		return obj;
+	}
 
 }

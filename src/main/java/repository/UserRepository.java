@@ -39,5 +39,8 @@ public interface UserRepository extends
 	Page<User> findByNameContainsIgnoreCase(String name,Pageable p);
 
 	Page<User> findByEmailContainsIgnoreCase(String email,Pageable p);
+	
+	@Query(value="SELECT u.name,u.address,u.email from User u WHERE u.username=:username")
+	Object[] getUserInfoByUsername(@Param("username")String username);
 
 }

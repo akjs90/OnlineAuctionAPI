@@ -74,4 +74,13 @@ public class AdminController {
 				criteria, query, new PageRequest(page - 1, size)));
 		return "admin/peoples";
 	}
+	
+	@RequestMapping(value="info",params={"t"},produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object[]> getUserInfoByUsername(@RequestParam("t")String username){
+		Object[] data=userService.getUserInfoByUsername(username);
+		if(null==data)
+			return new ResponseEntity<Object[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		return new ResponseEntity<Object[]>(data, HttpStatus.OK);
+	}
 }
