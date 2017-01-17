@@ -41,30 +41,46 @@ public class UserService {
 			return u;
 		return null;
 	}
-	
-	public User findUserByUsername(String username){
+
+	public User findUserByUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
-	
-	public Page<User> findAllUsers(Pageable p){
+
+	public Page<User> findAllUsers(Pageable p) {
 		return userRepo.findAll(p);
 	}
-	
-	public boolean toggleStatus(int id){
-		if(userRepo.toogleStatus(id)==1)
+
+	public boolean toggleStatus(int id) {
+		if (userRepo.toogleStatus(id) == 1)
 			return true;
 		return false;
 	}
-	
-	public List<String> getByNameData(String name){
+
+	public List<String> getByNameData(String name) {
 		return userRepo.getByName(name);
 	}
-	
-	public List<String> getByUserNameData(String username){
+
+	public List<String> getByUserNameData(String username) {
 		return userRepo.getByUserName(username);
 	}
-	public List<String> getByEmailData(String email){
+
+	public List<String> getByEmailData(String email) {
 		return userRepo.getByEmail(email);
 	}
-	
+
+	public Page<User> findPeopleUsingFilter(String filterName, String query, Pageable p) {
+		Page<User> list = null;
+		if (filterName.equalsIgnoreCase("username"))
+			list = userRepo.findByUsernameContainsIgnoreCase(query,p);
+		else if (filterName.equalsIgnoreCase("name"))
+			list = userRepo.findByNameContainsIgnoreCase(query,p);
+		else if (filterName.equalsIgnoreCase("email"))
+			list = userRepo.findByEmailContainsIgnoreCase(query,p);
+		System.out.println(list.getContent().size());
+		for(User u: list.getContent())
+			System.out.println(u.getName());
+		return list;
+
+	}
+
 }

@@ -51,15 +51,27 @@ public class AdminController {
 	public @ResponseBody List<String> getData(
 			@RequestParam(value = "c", required = false, defaultValue = "username") String criteria,
 			@RequestParam("t") String term) {
-		List<String> data=null;
+		List<String> data = null;
 		if (criteria.equalsIgnoreCase("name")) {
-			data=userService.getByNameData(term);
+			data = userService.getByNameData(term);
 
 		} else if (criteria.equalsIgnoreCase("email")) {
-			data=userService.getByEmailData(term);
+			data = userService.getByEmailData(term);
 		} else {
-			data=userService.getByUserNameData(term);
+			data = userService.getByUserNameData(term);
 		}
 		return data;
+	}
+
+	@RequestMapping(value = "people", params = { "q", "search_param" })
+	public String getPeopleByFilter(ModelMap map,
+			@RequestParam("q") String query,
+			@RequestParam("search_param") String criteria,
+			@RequestParam(name = "p", defaultValue = "1") Integer page,
+			@RequestParam(name = "l", defaultValue = "10") Integer size) {
+
+		map.addAttribute("user_list", userService.findPeopleUsingFilter(
+				criteria, query, new PageRequest(page - 1, size)));
+		return "admin/peoples";
 	}
 }

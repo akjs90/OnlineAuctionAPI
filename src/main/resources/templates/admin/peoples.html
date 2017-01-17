@@ -28,16 +28,14 @@
 }
 
 .ui-autocomplete-loading {
-    background: white url(/images/ui-anim_basic_16x16.gif) right center no-repeat;
-  }
+	background: white url(/images/ui-anim_basic_16x16.gif) right center
+		no-repeat;
+}
 </style>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link
-	href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
-	rel="stylesheet" />
-<script
-	src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet" />
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
 	(function() {
 		var token = $("meta[name='_csrf']").attr("content");
@@ -70,51 +68,67 @@
 			$('.input-group #search_param').val(param);
 		});
 		$('#query').autocomplete({
-			autoFocus:true,
-			minLength:2,
-			delay:500,
-			source:function( request, response ) {
-				var c=$('.input-group #search_param').val();
-		        $.ajax( {
-		            url: "search",
-		            dataType: "json",
-		            data: {
-		              "t": request.term,
-		              "c":c
-		            },
-		            success: function( data ) {
-		            	//alert("data");
-		              response(data) ;
-		            }
-		            
-		          } );
-		        }
+			autoFocus : false,
+			minLength : 2,
+			delay : 500,
+			source : function(request, response) {
+				var c = $('.input-group #search_param').val();
+				$.ajax({
+					url : "search",
+					dataType : "json",
+					data : {
+						"t" : request.term,
+						"c" : c
+					},
+					success : function(data) {
+						//alert("data");
+						response(data);
+					}
+				});
+			}
 		});
+
+		$('#rows').change(function(e) {
+			e.preventDefault();
+			var limit = $('#rows').val()
+			window.top.location = "/admin/people?l=" + limit;
+		})
 	});
 </script>
 </head>
 <body>
 	<div th:replace="fragments/header::navigation"></div>
 	<div class="container">
-		<div class="input-group">
-			<div class="input-group-btn search-panel">
-				<button type="button" class="btn btn-default dropdown-toggle"
-					data-toggle="dropdown">
-					<span id="search_concept">Filter by</span> <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="#username">By Username</a></li>
-					<li><a href="#name">By Name</a></li>
-					<li><a href="#email">By Email</a></li>
-				</ul>
+		<div class="row">
+			<div class="col-md-5">
+				<label>Show</label> <select id="rows" th:name="l" name="l">
+					<option th:each="i:${#numbers.sequence(5,25,5)}" th:value="${i}" th:text="${i}" th:selected="${i==user_list.size}">5</option>
+				</select> <label>entries</label>
 			</div>
-			<input type="hidden" name="search_param" value="all" id="search_param" />
-			<input id="query" type="text" class="form-control" name="x" placeholder="Search term..." autocomplete="on"/>
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-			</span>
-		</div>
 
+			<div class="col-md-7">
+				<form th:action="@{/admin/people}">
+					<div class="input-group">
+						<div class="input-group-btn search-panel">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<span id="search_concept">Filter by</span> <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#username">By Username</a></li>
+								<li><a href="#name">By Name</a></li>
+								<li><a href="#email">By Email</a></li>
+							</ul>
+						</div>
+
+						<input type="hidden" name="search_param" value="username" id="search_param" /> <input id="query" type="text" class="form-control" name="q" placeholder="Search term..." autocomplete="on" /> <span class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -127,27 +141,31 @@
 			<tbody th:if="${user_list.hasContent()}">
 				<tr th:each="person,status:${user_list.content}">
 					<td th:text="${status.count}">1</td>
-					<td th:text="${person.name}">Name</td>
+					<td><a th:text="${person.name}" th:href="@{#}">Name</a></td>
 					<td th:text="${person.username}">user</td>
-					<td><input type="checkbox"
-						th:onchange="${'toogle('+person.userId+')'}" data-toggle="toggle"
-						data-on="Active" data-off="Inactive" data-onstyle="success"
-						data-style="ios slow" th:checked="${person.enabled}" /></td>
+					<td><input type="checkbox" th:onchange="${'toogle('+person.userId+')'}" data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-style="ios slow" th:checked="${person.enabled}" /></td>
+				</tr>
+				<tr>
+					<td colspan='4'>
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<h3 class="panel-title">User Information</h3>
+							</div>
+							<div class="panel-body">
+							<img alt="userprofile" th:src="@{/images/femaleimage.png}" style="width:5%"/>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 
 		</table>
-		<p th:text="${_csrf.parameterName}"></p>
-		<p th:text="${_csrf.token}"></p>
+
 		<div class="text-center">
 			<ul class="pagination">
-				<li th:class="${!user_list.hasPrevious()}?disabled"><a href="#"
-					th:href="${!user_list.hasPrevious()}?@{?#}:@{?p=__${user_list.number}__}">&laquo;</a></li>
-				<li th:each="i:${#numbers.sequence(1,user_list.totalPages)}"
-					th:class="${user_list.number+1==i}?active"><a href="#"
-					th:href="@{?p=__${i}__}" th:text="${i}">1</a></li>
-				<li th:class="${!user_list.hasNext()}?disabled"><a href="#"
-					th:href="${!user_list.hasNext()}?@{?#}:@{?p=__${user_list.number+2}__}">&raquo;</a></li>
+				<li th:class="${!user_list.hasPrevious()}?disabled"><a href="#" th:href="${!user_list.hasPrevious()}?@{#}:@{''(p=__${user_list.number}__,l=${user_list.size})}">&laquo;</a></li>
+				<li th:each="i:${#numbers.sequence(1,user_list.totalPages)}" th:class="${user_list.number+1==i}?active"><a href="#" th:href="@{''(p=__${i}__,l=${user_list.size})}" th:text="${i}">1</a></li>
+				<li th:class="${!user_list.hasNext()}?disabled"><a href="#" th:href="${!user_list.hasNext()}?@{#}:@{''(p=__${user_list.number+2}__,l=${user_list.size})}">&raquo;</a></li>
 			</ul>
 		</div>
 	</div>
