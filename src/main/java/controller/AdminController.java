@@ -83,4 +83,8 @@ public class AdminController {
 			
 		return new ResponseEntity<Object[]>(data, HttpStatus.OK);
 	}
+	@RequestMapping("requests")
+	public String getItemRequestForAuction(){
+		return "admin/request";
+	}
 }

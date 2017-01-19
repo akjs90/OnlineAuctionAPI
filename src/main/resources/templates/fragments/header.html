@@ -47,7 +47,7 @@
 	<div
 		class="navbar navbar-default navbar-static-top navbar-custom-color"
 		role="navigation" th:fragment="navigation">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<a href="#" th:href="@{/welcome}" class="navbar-brand" style="color: white;">Online
 					Auction</a>
@@ -70,7 +70,7 @@
 							<li><a href="#">Completed <span class="badge">2</span></a></li>
 							<li><a href="#">All</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">Requests <span class="badge">10</span></a></li>
+							<li><a href="#" th:href="@{/admin/requests}">Requests <span class="badge">10</span></a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="#">Current <span class="badge">3</span></a></li>
 						</ul>
