@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import entity.User;
 import entity.UserWrapper;
+import service.AuctionService;
 import service.UserService;
 
 @Controller
@@ -28,6 +30,8 @@ public class AdminController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	AuctionService auctionServ;
 	@RequestMapping("people")
 	public String getPeopleList(
 			@RequestParam(name = "p", defaultValue = "1") Integer page,
@@ -84,7 +88,8 @@ public class AdminController {
 		return new ResponseEntity<Object[]>(data, HttpStatus.OK);
 	}
 	@RequestMapping("requests")
-	public String getItemRequestForAuction(){
+	public String getItemRequestForAuction(ModelMap map){
+		map.addAttribute("auction_request",auctionServ.getRecentAuctionRequest());
 		return "admin/request";
 	}
 }

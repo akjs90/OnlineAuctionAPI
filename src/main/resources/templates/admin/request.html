@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head th:replace="fragments/header::head">
-<meta charset="ISO-8859-1"/>
+<meta charset="ISO-8859-1" />
 <title>Insert title here</title>
 </head>
 <body>
-<div th:replace="fragments/header::navigation"></div>
-<div class="container">
-Requests
-
-</div>
+	<div th:replace="fragments/header::navigation"></div>
+	<div class="container">
+		<div class="list-group">
+			<a th:href="@{#}" href="#" th:each="request:${auction_request}" class="list-group-item">
+				<h4 th:text="${request.item.name}">Item Name</h4>
+				<p>
+					Requested By <span th:text="${request.user.name}">name of
+						user</span> on <span th:text="${request.item.registrationDate}">date</span>
+				</p>
+			</a>
+		</div>
+	</div>
 </body>
 </html>

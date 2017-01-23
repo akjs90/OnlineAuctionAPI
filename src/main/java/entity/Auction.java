@@ -31,17 +31,17 @@ public class Auction implements Serializable {
 	private char verified;
 
 	//bi-directional one-to-one association to Item
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="item_id")
 	private Item item;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="owner_id")
 	private User user;
 
 	//bi-directional many-to-one association to Bid
-	@OneToMany(mappedBy="auction")
+	@OneToMany(mappedBy="auction",fetch=FetchType.LAZY)
 	private List<Bid> bids;
 
 	public Auction() {
