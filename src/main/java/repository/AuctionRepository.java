@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 import entity.Auction;
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
-	List<Auction> findByVerified(Character flag);
+	
+	List<Auction> findByVerifiedOrderByItem_RegistrationDateDesc(Character flag);
 }

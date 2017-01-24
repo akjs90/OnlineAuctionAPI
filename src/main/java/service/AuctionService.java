@@ -11,8 +11,8 @@ import entity.Auction;
 public class AuctionService {
 	@Autowired
 	AuctionRepository auctionRepo;
-
+	
 	public List<Auction> getRecentAuctionRequest() {
-		return auctionRepo.findByVerified('N');
+		return auctionRepo.findByVerifiedOrderByItem_RegistrationDateDesc('N');
 	}
 }
