@@ -10,49 +10,78 @@
 		<div class="alert alert-info" th:unless="${auction_request!=null}">
 			<span class="glyphicon glyphicon-info-sign"></span> No new requests.
 		</div>
-		<div class="row">
-			<div class="col-md-5">
-				<div class="list-group">
-					<a th:href="@{#}" href="#" th:each="request:${auction_request}" class="list-group-item">
-						<h4 th:text="${request.item.name}">Item Name</h4>
-						<p>
-							Requested By <span th:text="${request.user.name}">name of user</span> on <span th:text="${request.item.registrationDate}">date</span>
-						</p>
-					</a>
-				</div>
-			</div>
-			<div class="col-md-7">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-							<!-- Indicators -->
-							<ol class="carousel-indicators">
-								<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-								<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-							</ol>
+		<div>
 
-							<!-- Wrapper for slides -->
-							<div class="carousel-inner" role="listbox">
-								<div class="item active " style="width:auto; height:350px;">
-									<img th:src="@{/image/1/1}" alt="..."/>
-									<div class="carousel-caption">...</div>
-								</div>
-								<div class="item" >
-									<img th:src="@{/image/1/2}" alt="..." width="auto" height="350px"/>
-									<div class="carousel-caption">...</div>
-								</div>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#request"
+					aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
+				<li role="presentation"><a href="#ongoing"
+					aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
+				<li role="presentation"><a href="#complete"
+					aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="request">					
+						<div class="list-group">
+							<div th:each="request:${auction_request}" class="list-group-item">
+								<span th:text="${request.item.name}" style="font-size: 16px;">Item
+									Name</span>
+								<button class="btn btn-default" style="float: right;"
+									data-toggle="tooltip" data-placement="left" title="Verify">
+									<span class="glyphicon glyphicon-ok"></span>
+								</button>
+								<button class="btn btn-default" style="float: right;"
+									data-toggle="tooltip" data-placement="left" title="Reject">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
+								<button class="btn btn-default" style="float: right;"
+									data-toggle="tooltip" data-placement="left" title="View Images">
+									<span class="glyphicon glyphicon-picture"></span>
+								</button>
+								<button class="btn btn-default" style="float: right;"
+									data-toggle="tooltip" data-placement="left" title="Description">
+									<span class="glyphicon glyphicon-info-sign"></span>
+								</button>
+								<p>
+									Requested By <span th:text="${request.user.name}">name
+										of user</span> on <span th:text="${request.item.registrationDate}">date</span>
+								</p>
 							</div>
-
-							<!-- Controls -->
-							<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span>
-							</a> <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span>
-							</a>
 						</div>
-
-					</div>
 				</div>
+				<div role="tabpanel" class="tab-pane" id="ongoing">...</div>
+				<div role="tabpanel" class="tab-pane" id="complete">...</div>
 			</div>
 		</div>
 	</div>
+	<script th:inline="javascript">
+	$('a[href="#ongoing"]').on('shown.bs.tab',function(e){
+		console.log(e.target);
+		$.ajax({
+			url:'ongoing',
+			success:function(data){
+				$('#ongoing').html("<h1>HHHHH</h1>");
+			},
+			failure:function(data){
+				
+			}
+		});
+	});
+	$('a[href="#complete"]').on('shown.bs.tab',function(e){
+		console.log(e.target);
+		$.ajax({
+			url:'completed',
+			success:function(data){
+				
+			},
+			failure:function(e){
+				
+			}
+		});
+	});
+	</script>
 </body>
 </html>
