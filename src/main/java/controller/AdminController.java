@@ -34,18 +34,14 @@ public class AdminController {
 	AuctionService auctionServ;
 
 	@RequestMapping("people")
-	public String getPeopleList(
-			@RequestParam(name = "p", defaultValue = "1") Integer page,
-			@RequestParam(name = "l", defaultValue = "10") Integer size,
-			ModelMap map) {
-		map.addAttribute("user_list",
-				userService.findAllUsers(new PageRequest(page - 1, size)));
+	public String getPeopleList(@RequestParam(name = "p", defaultValue = "1") Integer page,
+			@RequestParam(name = "l", defaultValue = "10") Integer size, ModelMap map) {
+		map.addAttribute("user_list", userService.findAllUsers(new PageRequest(page - 1, size)));
 		return "admin/peoples";
 	}
 
 	@RequestMapping(value = "changestatus/{id}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> toggleStatus(
-			@PathVariable(required = true, value = "id") int id) {
+	public @ResponseBody ResponseEntity<String> toggleStatus(@PathVariable(required = true, value = "id") int id) {
 		if (userService.toggleStatus(id))
 			return new ResponseEntity<String>(HttpStatus.OK);
 		return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,32 +65,27 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "people", params = { "q", "search_param" })
-	public String getPeopleByFilter(ModelMap map,
-			@RequestParam("q") String query,
-			@RequestParam("search_param") String criteria,
-			@RequestParam(name = "p", defaultValue = "1") Integer page,
+	public String getPeopleByFilter(ModelMap map, @RequestParam("q") String query,
+			@RequestParam("search_param") String criteria, @RequestParam(name = "p", defaultValue = "1") Integer page,
 			@RequestParam(name = "l", defaultValue = "10") Integer size) {
 
-		map.addAttribute("user_list", userService.findPeopleUsingFilter(
-				criteria, query, new PageRequest(page - 1, size)));
+		map.addAttribute("user_list",
+				userService.findPeopleUsingFilter(criteria, query, new PageRequest(page - 1, size)));
 		return "admin/peoples";
 	}
 
 	@RequestMapping(value = "info", params = { "t" }, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object[]> getUserInfoByUsername(
-			@RequestParam("t") String username) {
+	public @ResponseBody ResponseEntity<Object[]> getUserInfoByUsername(@RequestParam("t") String username) {
 		Object[] data = userService.getUserInfoByUsername(username);
 		if (null == data)
-			return new ResponseEntity<Object[]>(
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Object[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		return new ResponseEntity<Object[]>(data, HttpStatus.OK);
 	}
 
 	@RequestMapping("requests")
 	public String getItemRequestForAuction(ModelMap map) {
-		map.addAttribute("auction_request",
-				auctionServ.getRecentAuctionRequest());
+		map.addAttribute("auction_request", auctionServ.getRecentAuctionRequest());
 		return "admin/request";
 	}
 
@@ -109,4 +100,11 @@ public class AdminController {
 		return "admin/ongoing";
 	}
 
+	@RequestMapping(value="verify",method=RequestMethod.PUT, params="id",produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> rejectAuction(@RequestParam(required=true,name="id" )int auction_id) {
+		if (auctionServ.rejectAuction(auction_id))
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

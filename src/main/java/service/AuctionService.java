@@ -15,4 +15,11 @@ public class AuctionService {
 	public List<Auction> getRecentAuctionRequest() {
 		return auctionRepo.findByVerifiedOrderByItem_RegistrationDateDesc('N');
 	}
+	
+	public boolean rejectAuction(int auction_id){
+		int row_count=auctionRepo.rejectItem(auction_id);
+		if(row_count==1)
+			return true;
+		return false;
+	}
 }

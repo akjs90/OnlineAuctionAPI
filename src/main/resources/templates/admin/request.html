@@ -1,8 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
-<head th:replace="fragments/header::head">
-<meta charset="ISO-8859-1" />
+<head>
+<meta charset="ISO-8859-1" th:replace="fragments/header::head" />
 <title>Insert title here</title>
+<style type="text/css">
+/* Removes the default 20px margin and creates some padding space for the indicators and controls */
+.carousel {
+	margin-bottom: 0;
+	padding: 0 40px 30px 40px;
+}
+/* Reposition the controls slightly */
+.carousel-control {
+	left: -12px;
+}
+
+.carousel-control.right {
+	right: -12px;
+}
+/* Changes the position of the indicators */
+.carousel-indicators {
+	right: 50%;
+	top: auto;
+	bottom: 0px;
+	margin-right: -19px;
+}
+/* Changes the colour of the indicators */
+.carousel-indicators li {
+	background: #c0c0c0;
+}
+
+.carousel-indicators .active {
+	background: #333333;
+}
+</style>
 </head>
 <body>
 	<div th:replace="fragments/header::navigation"></div>
@@ -14,74 +44,188 @@
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#request"
-					aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
-				<li role="presentation"><a href="#ongoing"
-					aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
-				<li role="presentation"><a href="#complete"
-					aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
+				<li role="presentation" class="active"><a href="#request" aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
+				<li role="presentation"><a href="#ongoing" aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
+				<li role="presentation"><a href="#complete" aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
 			</ul>
 
 			<!-- Tab panes -->
 			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane active" id="request">					
-						<div class="list-group">
-							<div th:each="request:${auction_request}" class="list-group-item">
-								<span th:text="${request.item.name}" style="font-size: 16px;">Item
-									Name</span>
-								<button class="btn btn-default" style="float: right;"
-									data-toggle="tooltip" data-placement="left" title="Verify">
-									<span class="glyphicon glyphicon-ok"></span>
-								</button>
-								<button class="btn btn-default" style="float: right;"
-									data-toggle="tooltip" data-placement="left" title="Reject">
-									<span class="glyphicon glyphicon-trash"></span>
-								</button>
-								<button class="btn btn-default" style="float: right;"
-									data-toggle="tooltip" data-placement="left" title="View Images">
-									<span class="glyphicon glyphicon-picture"></span>
-								</button>
-								<button class="btn btn-default" style="float: right;"
-									data-toggle="tooltip" data-placement="left" title="Description">
-									<span class="glyphicon glyphicon-info-sign"></span>
-								</button>
-								<p>
-									Requested By <span th:text="${request.user.name}">name
-										of user</span> on <span th:text="${request.item.registrationDate}">date</span>
-								</p>
-							</div>
+				<div role="tabpanel" class="tab-pane active" id="request">
+					<div class="list-group">
+						<div th:each="request:${auction_request}" class="list-group-item">
+							<span th:text="${request.item.name}" style="font-size: 16px;">Item Name</span>
+							<button class="btn btn-default verify" style="float: right;" data-toggle="tooltip" data-placement="left" title="Verify">
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
+							<button class="btn btn-default reject" style="float: right;" data-toggle="tooltip" data-placement="left" title="Reject">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+							<button class="btn btn-default" style="float: right;" data-toggle="tooltip" data-placement="left" title="View Images">
+								<span class="glyphicon glyphicon-picture"></span>
+							</button>
+							<button class="btn btn-default" style="float: right;" data-toggle="tooltip" data-placement="left" title="Description">
+								<span class="glyphicon glyphicon-info-sign"></span>
+							</button>
+							<p>
+								Requested By <span th:text="${request.user.name}">name of user</span> on <span th:text="${request.item.registrationDate}">date</span>
+							</p>
+							<input type="hidden" name="aid" th:value="${request.itemId}" />
 						</div>
+					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="ongoing">...</div>
 				<div role="tabpanel" class="tab-pane" id="complete">...</div>
 			</div>
 		</div>
+
+		<!-- Modal for Images -->
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#imageViewer">Launch demo modal</button>
+
+		<!-- Modal -->
+		<div class="modal fade" id="imageViewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<div id="myCarousel" class="carousel slide">
+
+							<ol class="carousel-indicators">
+								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+								<li data-target="#myCarousel" data-slide-to="1"></li>
+								<li data-target="#myCarousel" data-slide-to="2"></li>
+							</ol>
+
+							<!-- Carousel items -->
+							<div class="carousel-inner">
+
+								<div class="item active">
+
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+								</div>
+								<!--/item-->
+
+								<div class="item">
+
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+
+
+								</div>
+								<!--/item-->
+								<div class="item">
+
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+									<div>
+										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
+									</div>
+
+
+								</div>
+								<!--/item-->
+
+
+
+							</div>
+							<!--/carousel-inner-->
+
+							<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a> <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+						</div>
+						<!--/myCarousel-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  End of Modal for Images  -->
 	</div>
 	<script th:inline="javascript">
-	$('a[href="#ongoing"]').on('shown.bs.tab',function(e){
-		console.log(e.target);
-		$.ajax({
-			url:'ongoing',
-			success:function(data){
-				$('#ongoing').html("<h1>HHHHH</h1>");
-			},
-			failure:function(data){
-				
-			}
+		$('document').ready(function(){
+			
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$.ajaxSetup({
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+					console.log('set');
+				}
+			});
 		});
-	});
-	$('a[href="#complete"]').on('shown.bs.tab',function(e){
-		console.log(e.target);
-		$.ajax({
-			url:'completed',
-			success:function(data){
-				
-			},
-			failure:function(e){
-				
-			}
+		$('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
+			console.log(e.target);
+			$.ajax({
+				url : 'ongoing',
+				success : function(data) {
+					$('#ongoing').html("<h1>HHHHH</h1>");
+				},
+				failure : function(data) {
+
+				}
+			});
 		});
-	});
+		$('a[href="#complete"]').on('shown.bs.tab', function(e) {
+			console.log(e.target);
+			$.ajax({
+				url : 'completed',
+				success : function(data) {
+
+				},
+				failure : function(e) {
+
+				}
+			});
+		});
+		$('.reject').on('click', function(e) {
+			e.preventDefault();
+			var val = $(this).parent().find('input[name="aid"]').val();
+			var cur=$(this).parent();
+			$.ajax({
+				url : 'verify',
+				method : 'put',
+				data : {
+					id : val,
+				},
+				success : function(data, status) {
+					cur.hide(500,function(){
+						$(this).remove();
+					});
+				},
+				error : function(data, status) {
+					console.log(status);
+				}
+			});
+		});
 	</script>
 </body>
 </html>

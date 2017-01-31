@@ -63,19 +63,7 @@
 					<li><a href="#">Home</a></li>
 					<!-- for admin -->
 					<li th:if="${user_info.role=='ROLE_ADMIN'}"><a href="#" th:href="@{/admin/people}">People</a></li>
-					<li th:if="${user_info.role=='ROLE_ADMIN'}" class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">Auction<span class="caret"></span></a>
-						<ul class="dropdown-menu navbar-custom-color" >
-							<li><a href="#">Completed <span class="badge">2</span></a></li>
-							<li><a href="#">All</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#" th:href="@{/admin/requests}">Requests <span class="badge">10</span></a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">Current <span class="badge">3</span></a></li>
-						</ul>
-				
-					</li>
+					<li th:if="${user_info.role=='ROLE_ADMIN'}"><a href="#" th:href="@{/admin/requests}">Auction</a></li>
 					<li th:if="${user_info.role=='ROLE_ADMIN'}"><a href="#">Reports</a></li>
 					<!-- admin ended  -->
 				<!-- for user -->
