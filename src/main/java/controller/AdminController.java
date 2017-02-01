@@ -1,11 +1,14 @@
 package controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import entity.User;
 import entity.UserWrapper;
 import service.AuctionService;
 import service.UserService;
@@ -107,4 +109,14 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@RequestMapping(value="verify",method=RequestMethod.POST, params={"start-time","end-time","verify_auc_id"},produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> verifyAuctionRequest(@RequestParam("start-time") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) Calendar start,@RequestParam("end-time") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME)LocalDateTime end,int verify_auc_id){
+		System.out.println(start);
+		/*Date t;
+		System.out.println("Date "+t);*/
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 }

@@ -32,12 +32,13 @@
 .carousel-indicators .active {
 	background: #333333;
 }
+
 </style>
 </head>
 <body>
 	<div th:replace="fragments/header::navigation"></div>
 	<div class="container">
-		<div class="alert alert-info" th:unless="${auction_request!=null}">
+		<div class="alert alert-info" th:if="${auction_request==null}">
 			<span class="glyphicon glyphicon-info-sign"></span> No new requests.
 		</div>
 		<div>
@@ -169,10 +170,33 @@
 			</div>
 		</div>
 		<!--  End of Modal for Images  -->
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-sm">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Verify Item</h4>
+					</div>
+					<div class="modal-body">
+						<form action="#" id="verify-form">
+						<input type="datetime-local" name="start-time" placeholder="Start Date and Time" class="form-control form-group"/>
+						<input type="datetime-local" name="end-time" placeholder="End Date and Time" class="form-control form-group"/>
+						<input type="hidden" name="verify_auc_id"/>
+						<button class="btn btn-success btn-block" type="submit" >Verify</button>
+						<button class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script th:inline="javascript">
-		$('document').ready(function(){
-			
+		$('document').ready(function() {
+
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
 			$.ajaxSetup({
@@ -209,7 +233,7 @@
 		$('.reject').on('click', function(e) {
 			e.preventDefault();
 			var val = $(this).parent().find('input[name="aid"]').val();
-			var cur=$(this).parent();
+			var cur = $(this).parent();
 			$.ajax({
 				url : 'verify',
 				method : 'put',
@@ -217,7 +241,7 @@
 					id : val,
 				},
 				success : function(data, status) {
-					cur.hide(500,function(){
+					cur.hide(500, function() {
 						$(this).remove();
 					});
 				},
@@ -225,6 +249,30 @@
 					console.log(status);
 				}
 			});
+		});
+		$('.verify').on('click',function(e){
+			
+			var val = $(this).parent().find('input[name="aid"]').val();
+			console.log(val);
+			$('input[name=verify_auc_id]').val(val);
+			$('#myModal').modal('show');
+		});
+		$('#verify-form').on('submit',function(e){
+			e.preventDefault();
+			var form_data = $(this).serialize();
+		//	console.log(data);
+			$.ajax({
+				url:'verify',
+				method:'post',
+				data:form_data,
+				success:function(data,status){
+					console.log("Success");
+				},
+				error:function(data,status){
+					console.error("Failure");
+				}
+			});
+			
 		});
 	</script>
 </body>
