@@ -32,7 +32,6 @@
 .carousel-indicators .active {
 	background: #333333;
 }
-
 </style>
 </head>
 <body>
@@ -92,86 +91,13 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<div id="myCarousel" class="carousel slide">
-
-							<ol class="carousel-indicators">
-								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-								<li data-target="#myCarousel" data-slide-to="1"></li>
-								<li data-target="#myCarousel" data-slide-to="2"></li>
-							</ol>
-
-							<!-- Carousel items -->
-							<div class="carousel-inner">
-
-								<div class="item active">
-
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-								</div>
-								<!--/item-->
-
-								<div class="item">
-
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-
-
-								</div>
-								<!--/item-->
-								<div class="item">
-
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-									<div>
-										<a href="#x" class="thumbnail"><img src="http://placehold.it/150x150" alt="Image" style="max-width: 100%;" /></a>
-									</div>
-
-
-								</div>
-								<!--/item-->
-
-
-
-							</div>
-							<!--/carousel-inner-->
-
-							<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a> <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-						</div>
-						<!--/myCarousel-->
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--  End of Modal for Images  -->
 
-		<!-- Modal -->
+		<!-- Verification Modal -->
 		<div class="modal fade" id="myModal" role="dialog">
 			<div class="modal-dialog modal-sm">
 
@@ -183,18 +109,36 @@
 					</div>
 					<div class="modal-body">
 						<form action="#" id="verify-form">
-						<input type="datetime-local" name="start-time" placeholder="Start Date and Time" class="form-control form-group"/>
-						<input type="datetime-local" name="end-time" placeholder="End Date and Time" class="form-control form-group"/>
-						<input type="hidden" name="verify_auc_id"/>
-						<button class="btn btn-success btn-block" type="submit" >Verify</button>
-						<button class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+							<input type="datetime-local" name="start-time" placeholder="Start Date and Time" class="form-control form-group" /> <input type="datetime-local" name="end-time" placeholder="End Date and Time" class="form-control form-group" /> <input type="hidden" name="verify_auc_id" />
+							<button class="btn btn-success btn-block" type="submit">Verify</button>
+							<button class="btn btn-default btn-block" data-dismiss="modal">Close</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+		<!-- end of verification modal -->
+		<div class="well">
+		<div class="row">
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/1}" style="height: 150px;width:auto" /></a>
+			</div>
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/2}" style="height: 150px;width:auto"/></a>
+			</div>
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/1}" style="height: 150px;width:auto"/></a>
+			</div>
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/2}" style="height: 150px;width:auto"/></a>
+			</div>
+
+
+		</div></div>
+		
 	</div>
 	<script th:inline="javascript">
+		var _element;
 		$('document').ready(function() {
 
 			var token = $("meta[name='_csrf']").attr("content");
@@ -213,7 +157,7 @@
 				success : function(data) {
 					$('#ongoing').html("<h1>HHHHH</h1>");
 				},
-				failure : function(data) {
+				error : function(data) {
 
 				}
 			});
@@ -225,7 +169,7 @@
 				success : function(data) {
 
 				},
-				failure : function(e) {
+				error : function(e) {
 
 				}
 			});
@@ -250,29 +194,30 @@
 				}
 			});
 		});
-		$('.verify').on('click',function(e){
-			
+		$('.verify').on('click', function(e) {
 			var val = $(this).parent().find('input[name="aid"]').val();
-			console.log(val);
 			$('input[name=verify_auc_id]').val(val);
+			_element = $(this).parent();
 			$('#myModal').modal('show');
 		});
-		$('#verify-form').on('submit',function(e){
+		$('#verify-form').on('submit', function(e) {
 			e.preventDefault();
 			var form_data = $(this).serialize();
-		//	console.log(data);
 			$.ajax({
-				url:'verify',
-				method:'post',
-				data:form_data,
-				success:function(data,status){
-					console.log("Success");
+				url : 'verify',
+				method : 'post',
+				data : form_data,
+				success : function(data, status) {
+					$('#myModal').modal('hide');
+					_element.hide(500, function() {
+						$(this).remove();
+					});
 				},
-				error:function(data,status){
+				error : function(data, status) {
 					console.error("Failure");
 				}
 			});
-			
+
 		});
 	</script>
 </body>

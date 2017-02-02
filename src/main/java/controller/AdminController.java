@@ -1,5 +1,7 @@
 package controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
@@ -106,17 +108,17 @@ public class AdminController {
 	@ResponseBody
 	public ResponseEntity<String> rejectAuction(@RequestParam(required=true,name="id" )int auction_id) {
 		if (auctionServ.rejectAuction(auction_id))
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);//send mail of rejection to user.
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@RequestMapping(value="verify",method=RequestMethod.POST, params={"start-time","end-time","verify_auc_id"},produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> verifyAuctionRequest(@RequestParam("start-time") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) Calendar start,@RequestParam("end-time") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME)LocalDateTime end,int verify_auc_id){
-		System.out.println(start);
-		/*Date t;
-		System.out.println("Date "+t);*/
+	public ResponseEntity<String> verifyAuctionRequest(@RequestParam("start-time") String start,@RequestParam("end-time") String end,int verify_auc_id) throws ParseException{
+		if(auctionServ.verifyAuctionRequest(start, end, verify_auc_id))
+			return new ResponseEntity<>(HttpStatus.OK);		//send mail of approval to user.
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	
+	
 }

@@ -20,11 +20,11 @@ public class Auction implements Serializable {
 	@Column(name="item_id")
 	private int itemId;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="end_date")
 	private Date endDate;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="start_date")
 	private Date startDate;
 
