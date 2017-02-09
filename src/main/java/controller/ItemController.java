@@ -41,6 +41,11 @@ public class ItemController {
 	
 	private final Path rootLoc = Paths.get("uploadedImages");
 	
+	@RequestMapping("/")
+	public String itemHome(){
+		return "item/itemHome";
+	}
+	
 	@RequestMapping("/add")
 	public String showForm(@ModelAttribute("item") Item item){
 		return "item/addItem";
