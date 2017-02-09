@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" th:replace="fragments/header::head" />
+<title>Insert title here</title>
+<style type="text/css">
+/* Removes the default 20px margin and creates some padding space for the indicators and controls */
+.carousel {
+	margin-bottom: 0;
+	padding: 0 40px 30px 40px;
+}
+/* Reposition the controls slightly */
+.carousel-control {
+	left: -12px;
+}
+
+.carousel-control.right {
+	right: -12px;
+}
+/* Changes the position of the indicators */
+.carousel-indicators {
+	right: 50%;
+	top: auto;
+	bottom: 0px;
+	margin-right: -19px;
+}
+/* Changes the colour of the indicators */
+.carousel-indicators li {
+	background: #c0c0c0;
+}
+
+.carousel-indicators .active {
+	background: #333333;
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/header::navigation"></div>
+	<div class="container">
+		<div class="alert alert-info" th:if="${auction_request==null}">
+			<span class="glyphicon glyphicon-info-sign"></span> No new requests.
+		</div>
+		<div>
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#request" aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
+				<li role="presentation"><a href="#ongoing" aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
+				<li role="presentation"><a href="#complete" aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="request">
+					<div class="list-group">
+						<div th:each="request:${auction_request}" class="list-group-item">
+							<span th:text="${request.item.name}" style="font-size: 16px;">Item Name</span>
+							<button class="btn btn-default verify" style="float: right;" data-toggle="tooltip" data-placement="left" title="Verify">
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
+							<button class="btn btn-default reject" style="float: right;" data-toggle="tooltip" data-placement="left" title="Reject">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+							<button class="btn btn-default" style="float: right;" data-toggle="tooltip" data-placement="left" title="View Images">
+								<span class="glyphicon glyphicon-picture"></span>
+							</button>
+							<button class="btn btn-default" style="float: right;" data-toggle="tooltip" data-placement="left" title="Description">
+								<span class="glyphicon glyphicon-info-sign"></span>
+							</button>
+							<p>
+								Requested By <span th:text="${request.user.name}">name of user</span> on <span th:text="${request.item.registrationDate}">date</span>
+							</p>
+							<input type="hidden" name="aid" th:value="${request.itemId}" />
+						</div>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="ongoing">...</div>
+				<div role="tabpanel" class="tab-pane" id="complete">...</div>
+			</div>
+		</div>
+
+		<!-- Modal for Images -->
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#imageViewer">Launch demo modal</button>
+
+		<!-- Modal -->
+		<div class="modal fade" id="imageViewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  End of Modal for Images  -->
+
+		<!-- Verification Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-sm">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Verify Item</h4>
+					</div>
+					<div class="modal-body">
+						<form action="#" id="verify-form">
+							<input type="datetime-local" name="start-time" placeholder="Start Date and Time" class="form-control form-group" /> <input type="datetime-local" name="end-time" placeholder="End Date and Time" class="form-control form-group" /> <input type="hidden" name="verify_auc_id" />
+							<button class="btn btn-success btn-block" type="submit">Verify</button>
+							<button class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end of verification modal -->
+		<div class="well">
+		<div class="row">
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/1}" style="height: 150px;width:auto" /></a>
+			</div>
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/2}" style="height: 150px;width:auto"/></a>
+			</div>
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/1}" style="height: 150px;width:auto"/></a>
+			</div>
+			<div >
+				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/2}" style="height: 150px;width:auto"/></a>
+			</div>
+
+
+		</div></div>
+		
+	</div>
+	<script th:inline="javascript">
+		var _element;
+		$('document').ready(function() {
+
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$.ajaxSetup({
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+					console.log('set');
+				}
+			});
+		});
+		$('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
+			console.log(e.target);
+			$.ajax({
+				url : 'ongoing',
+				success : function(data) {
+					$('#ongoing').html("<h1>HHHHH</h1>");
+				},
+				error : function(data) {
+
+				}
+			});
+		});
+		$('a[href="#complete"]').on('shown.bs.tab', function(e) {
+			console.log(e.target);
+			$.ajax({
+				url : 'completed',
+				success : function(data) {
+
+				},
+				error : function(e) {
+
+				}
+			});
+		});
+		$('.reject').on('click', function(e) {
+			e.preventDefault();
+			var val = $(this).parent().find('input[name="aid"]').val();
+			var cur = $(this).parent();
+			$.ajax({
+				url : 'verify',
+				method : 'put',
+				data : {
+					id : val,
+				},
+				success : function(data, status) {
+					cur.hide(500, function() {
+						$(this).remove();
+					});
+				},
+				error : function(data, status) {
+					console.log(status);
+				}
+			});
+		});
+		$('.verify').on('click', function(e) {
+			var val = $(this).parent().find('input[name="aid"]').val();
+			$('input[name=verify_auc_id]').val(val);
+			_element = $(this).parent();
+			$('#myModal').modal('show');
+		});
+		$('#verify-form').on('submit', function(e) {
+			e.preventDefault();
+			var form_data = $(this).serialize();
+			$.ajax({
+				url : 'verify',
+				method : 'post',
+				data : form_data,
+				success : function(data, status) {
+					$('#myModal').modal('hide');
+					_element.hide(500, function() {
+						$(this).remove();
+					});
+				},
+				error : function(data, status) {
+					console.error("Failure");
+				}
+			});
+
+		});
+	</script>
+</body>
+</html>
