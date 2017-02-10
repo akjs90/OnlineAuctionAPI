@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import entity.Auction;
 import entity.Item;
 import entity.ItemPicture;
 import entity.User;
@@ -42,7 +42,14 @@ public class ItemController {
 	private final Path rootLoc = Paths.get("uploadedImages");
 	
 	@RequestMapping("/")
-	public String itemHome(){
+	public String itemHome(HttpSession session){
+		UserWrapper userWrapper = (UserWrapper) session.getAttribute("user_info");
+		User user = usrService.findUserByUsername(userWrapper.getUsername());
+		ArrayList<Item> itemsList = service.getItemByUser(user);
+		for (Item item : itemsList) {
+			System.out.println(item.getName());
+		}
+		session.setAttribute("items", itemsList);
 		return "item/itemHome";
 	}
 	
@@ -79,7 +86,7 @@ public class ItemController {
 				Files.copy(files[i].getInputStream(),itemLocal.resolve("item"+savedItem.getItemId()+"_"+(i+1)));
 				ItemPicture itmPic = new ItemPicture();
 				itmPic.setItem(savedItem);
-				String picUrl=itemLocal.toString()+File.separator+"item"+savedItem.getItemId()+"_"+(i+1);
+				String picUrl=savedItem.getItemId()+File.separator+(i+1);
 				itmPic.setPictureUrl(picUrl);
 				service.addPicture(itmPic);
 			}
