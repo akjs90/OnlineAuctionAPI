@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import entity.Auction;
+import entity.Item;
+import entity.User;
 
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
@@ -26,7 +28,15 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	@Transactional
 	@Query(value = "UPDATE Auction a SET a.verified='A', a.endDate=:end, a.startDate=:start WHERE a.itemId=:auction")
 	int verifyItem(@Param("start") Date start_date, @Param("end") Date end_date, @Param("auction") int auction_id);
+
 	
 	@Query(value="SELECT a.itemId,i.name,a.endDate FROM Auction a,Item i WHERE current_timestamp BETWEEN a.startDate AND a.endDate AND a.verified='A' AND a.itemId=i.itemId")
 	List<Object[]> getOngoingAuctions();
+
+	
+	//List<Auction> findByUser(User user);
+	
+	@Query(value="Select a.item from Auction a where a.user =:user")
+	List<Item> findItemByUser(@Param("user") User user);
+
 }

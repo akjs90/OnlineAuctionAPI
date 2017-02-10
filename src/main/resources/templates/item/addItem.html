@@ -51,6 +51,11 @@ input[type=number]::-webkit-outer-spin-button {
 					th:field="*{name}" />
 			</div>
 			<div class="form-group">
+				<label>Description</label> <textarea class="form-control"
+					placeholder="Enter the description" required="required"
+					th:field="*{description}" style="resize: vertical;"></textarea>
+			</div>
+			<div class="form-group">
 				<label>Amount</label>
 				<div class="input-group">
 					<div class="input-group-addon"

@@ -1,5 +1,7 @@
 package service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +48,14 @@ public class ItemService {
 			return auctionRepo.save(auction);
 	}
 
+	public ArrayList<Item> getItemByUser(User user){
+		/*ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<Auction> returnedObjects =(ArrayList<Auction>) auctionRepo.findByUser(user);
+		for (Auction obj : returnedObjects) {
+			Item i = (Item) obj.getItem();
+			items.add(i);
+		}
+		return items;*/
+		return (ArrayList<Item>) auctionRepo.findItemByUser(user);
+	}
 }
