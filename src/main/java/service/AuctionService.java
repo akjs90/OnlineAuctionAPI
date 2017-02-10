@@ -1,7 +1,9 @@
 package service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import repository.AuctionRepository;
 import entity.Auction;
+import entity.OngoingAuction;
 
 @Service
 public class AuctionService {
@@ -33,5 +36,22 @@ public class AuctionService {
 		if (rows == 1)
 			return true;
 		return false;
+	}
+	
+	public List<OngoingAuction> getOngoingAuctionList(){
+		List<Object[]> li=auctionRepo.getOngoingAuctions();
+		if(li.size()==0)
+			return null;
+		List<OngoingAuction> ongoingAuctions=new ArrayList<OngoingAuction>();
+		for(Object[] obj : li){
+			
+			Date end=(Date)obj[2];
+			Date curr=new Date();
+			long remainingTime=end.getTime()-curr.getTime();
+			OngoingAuction auction=new OngoingAuction((int)obj[0], obj[1].toString(), BigDecimal.valueOf(12), remainingTime);
+			ongoingAuctions.add(auction);
+		}
+		System.out.println(li.size());
+		return ongoingAuctions;
 	}
 }

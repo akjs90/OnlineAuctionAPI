@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import entity.OngoingAuction;
 import entity.UserWrapper;
 import service.AuctionService;
 import service.UserService;
@@ -100,8 +101,11 @@ public class AdminController {
 
 	@RequestMapping("ongoing")
 	@ResponseBody
-	public String getOngoingAuction(ModelMap map) {
-		return "admin/ongoing";
+	public ResponseEntity<List<OngoingAuction>> getOngoingAuction(ModelMap map) {
+		List<OngoingAuction> list=auctionServ.getOngoingAuctionList();
+		if(null==list)
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(list,HttpStatus.OK);
 	}
 
 	@RequestMapping(value="verify",method=RequestMethod.PUT, params="id",produces=MediaType.APPLICATION_JSON_VALUE)

@@ -26,4 +26,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	@Transactional
 	@Query(value = "UPDATE Auction a SET a.verified='A', a.endDate=:end, a.startDate=:start WHERE a.itemId=:auction")
 	int verifyItem(@Param("start") Date start_date, @Param("end") Date end_date, @Param("auction") int auction_id);
+	
+	@Query(value="SELECT a.itemId,i.name,a.endDate FROM Auction a,Item i WHERE current_timestamp BETWEEN a.startDate AND a.endDate AND a.verified='A' AND a.itemId=i.itemId")
+	List<Object[]> getOngoingAuctions();
 }

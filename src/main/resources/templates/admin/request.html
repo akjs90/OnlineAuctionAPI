@@ -74,7 +74,23 @@
 						</div>
 					</div>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="ongoing">...</div>
+				<div role="tabpanel" class="tab-pane" id="ongoing">
+					<div class="list-group">
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col-md-8">
+									<p style="font-size: 16px;">Item Name</p>
+								</div>
+								<div class="col-md-4">
+									<div><span style="font-size: 16px; font-weight: 700;margin-right: 30px;">Time Left</span> <span style="font-size: 16px; font-weight: 700">02d 16h 12m 52s</span></div> 
+									<div><span style="font-size: 16px;margin-right: 12px;">Current Price</span><span style="font-size: 16px;">Rs 14023.00</span></div> 
+									<div><span style="font-size: 16px;margin-right: 36px;">Total Bids</span><span style="font-size: 16px;">75</span></div> 
+									<div><span style="font-size: 16px;margin-right: 14px;">Total Bidders</span><span style="font-size: 16px;">15</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div role="tabpanel" class="tab-pane" id="complete">...</div>
 			</div>
 		</div>
@@ -119,23 +135,24 @@
 		</div>
 		<!-- end of verification modal -->
 		<div class="well">
-		<div class="row">
-			<div >
-				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/1}" style="height: 150px;width:auto" /></a>
-			</div>
-			<div >
-				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/2}" style="height: 150px;width:auto"/></a>
-			</div>
-			<div >
-				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/1}" style="height: 150px;width:auto"/></a>
-			</div>
-			<div >
-				<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/2}" style="height: 150px;width:auto"/></a>
-			</div>
+			<div class="row">
+				<div>
+					<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/1}" style="height: 150px; width: auto" /></a>
+				</div>
+				<div>
+					<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/1/2}" style="height: 150px; width: auto" /></a>
+				</div>
+				<div>
+					<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/1}" style="height: 150px; width: auto" /></a>
+				</div>
+				<div>
+					<a href="#" class="thumbnail"><img src="http://placehold.it/150x150" alt="..." th:src="@{/image/3/2}" style="height: 150px; width: auto" /></a>
+				</div>
 
 
-		</div></div>
-		
+			</div>
+		</div>
+
 	</div>
 	<script th:inline="javascript">
 		var _element;
@@ -155,10 +172,14 @@
 			$.ajax({
 				url : 'ongoing',
 				success : function(data) {
-					$('#ongoing').html("<h1>HHHHH</h1>");
+					//$('#ongoing').html("<h1>HHHHH</h1>");
+					data.forEach(function(e) {
+						console.log(e['itemName']);
+					});
+
 				},
 				error : function(data) {
-
+					$('#ongoing').html("<h1>ERROR</h1>");
 				}
 			});
 		});
