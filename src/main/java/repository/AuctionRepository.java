@@ -34,9 +34,15 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	List<Object[]> getOngoingAuctions();
 
 	
-	//List<Auction> findByUser(User user);
+	List<Auction> findByUserAndVerified(User user,char verified);
 	
+	//not using right now... but can be used if want to know how many items pr put on site by the user.
 	@Query(value="Select a.item from Auction a where a.user =:user")
 	List<Item> findItemByUser(@Param("user") User user);
+	
+	@Query(value="Select a.item from Auction a where a.user =:user and a.verified =:verified")
+	List<Item> findItemByUserAndVerified(@Param("user") User user, @Param("verified") char verified);
+	
+	
 
 }

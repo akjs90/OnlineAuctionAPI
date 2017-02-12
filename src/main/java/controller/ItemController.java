@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,9 +44,18 @@ public class ItemController {
 	
 	@RequestMapping("/")
 	public String itemHome(HttpSession session){
+		
+		if(session.getAttribute("items")!= null)
+			session.removeAttribute("items");
+			
+		return "item/itemHome";
+	}
+	
+	@RequestMapping("/{verify}")
+	public String getItemsByVerification(@PathVariable("verify") char verify, HttpSession session){
 		UserWrapper userWrapper = (UserWrapper) session.getAttribute("user_info");
 		User user = usrService.findUserByUsername(userWrapper.getUsername());
-		ArrayList<Item> itemsList = service.getItemByUser(user);
+		ArrayList<Item> itemsList = service.getItemByUserAndVerified(user, verify);
 		for (Item item : itemsList) {
 			System.out.println(item.getName());
 		}
