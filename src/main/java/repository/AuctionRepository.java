@@ -30,12 +30,12 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	int verifyItem(@Param("start") Date start_date, @Param("end") Date end_date, @Param("auction") int auction_id);
 
 	
-	@Query(value="SELECT a.itemId,i.name,a.endDate FROM Auction a,Item i WHERE current_timestamp BETWEEN a.startDate AND a.endDate AND a.verified='A' AND a.itemId=i.itemId")
+	@Query(value="SELECT a.item_id,i.name,a.end_date,max(b.bid_price) as `bid_price`,count(b.bid_price) as `Total Bids` , count(distinct(b.bidder_id)) as `total bidders` FROM `auction` as a Left join `bids` as b ON item_id=auction_id Left join `item` as i ON i.item_id=a.item_id WHERE current_timestamp between a.start_date and a.end_date AND a.verified='A' group by i.item_id ", nativeQuery=true)
 	List<Object[]> getOngoingAuctions();
 
 	
 	//List<Auction> findByUser(User user);
-	
+
 	@Query(value="Select a.item from Auction a where a.user =:user")
 	List<Item> findItemByUser(@Param("user") User user);
 

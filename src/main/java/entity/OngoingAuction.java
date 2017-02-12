@@ -7,13 +7,20 @@ public class OngoingAuction {
 	private String itemName;
 	private BigDecimal current_bid;
 	private long timeRemaining;
+	private int totalBids;
+	private int totalBidders;
 
-	public OngoingAuction(int auction_id, String itemName, BigDecimal current_bid, long timeRemaining) {
-		super();
+	
+
+	public OngoingAuction(int auction_id, String itemName,
+			BigDecimal current_bid, long timeRemaining, int totalBids,
+			int totalBidders) {
 		this.auction_id = auction_id;
 		this.itemName = itemName;
 		this.current_bid = current_bid;
 		this.timeRemaining = timeRemaining;
+		this.totalBids = totalBids;
+		this.totalBidders = totalBidders;
 	}
 
 	public int getAuction_id() {
@@ -52,6 +59,22 @@ public class OngoingAuction {
 	public String toString() {
 		return "OngoingAuction [itemName=" + itemName + ", current_bid=" + current_bid + ", timeRemaining="
 				+ timeRemaining + "]";
+	}
+
+	public int getTotalBids() {
+		return totalBids;
+	}
+
+	public void setTotalBids(int totalBids) {
+		this.totalBids = totalBids;
+	}
+
+	public int getTotalBidders() {
+		return totalBidders;
+	}
+
+	public void setTotalBidders(int totalBidders) {
+		this.totalBidders = totalBidders;
 	}
 
 }
