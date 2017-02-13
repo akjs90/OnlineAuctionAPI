@@ -1,6 +1,7 @@
 package service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,11 +45,16 @@ public class AuctionService {
 			return null;
 		List<OngoingAuction> ongoingAuctions=new ArrayList<OngoingAuction>();
 		for(Object[] obj : li){
-			
+			System.out.println(obj.length);
 			Date end=(Date)obj[2];
 			Date curr=new Date();
 			long remainingTime=end.getTime()-curr.getTime();
-			OngoingAuction auction=new OngoingAuction((int)obj[0], obj[1].toString(), BigDecimal.valueOf(12), remainingTime);
+			BigInteger d=(BigInteger)obj[4];
+			int a=d.intValueExact();
+			BigInteger e=(BigInteger)obj[5];
+			System.out.println(e.toString());
+			int g=e.intValueExact();
+			OngoingAuction auction=new OngoingAuction((int)obj[0], obj[1].toString(), (BigDecimal)obj[3], remainingTime,a, g);
 			ongoingAuctions.add(auction);
 		}
 		System.out.println(li.size());
