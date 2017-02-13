@@ -77,26 +77,37 @@ padding: 2%
 			Item
 		</button>
 	</form>
-	<form class="form-style">
+	<form class="form-style" th:action="@{/item/N}">
 		<button type="submit" class="btn btn-success form-control">
-			 Running / Verified<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
+			 Requested<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
 		</button>
 	</form>
-	<form  class="form-style">
+	<form class="form-style" th:action="@{/item/A}">
 		<button type="submit" class="btn btn-success form-control">
-			 Requested/Rejected<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
+			Verified<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
 		</button>
 	</form>
-	<form  class="form-style">
+	<form  class="form-style"  th:action="@{/item/X}">
+		<button type="submit" class="btn btn-success form-control">
+			 Running<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
+		</button>
+	</form>
+	<form  class="form-style"  th:action="@{/item/C}">
 		<button type="submit" class="btn btn-success form-control">
 			 Completed<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
 		</button>
 	</form>
+	<form  class="form-style"  th:action="@{/item/R}">
+		<button type="submit" class="btn btn-success form-control">
+			Rejected<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
+		</button>
+	</form>
+	
 	</div>
 	<div class="col-md-9">
 	<div class="row" >
 	<div class="col-md-4" th:each="item: ${session.items}">
-		<div class=" card-style" >
+		<div class=" card-style" th:id="${'card'+item.itemId}">
 			<div th:id="${'image'+item.itemId}" style="text-align: center;" class= "carousel slide" data-ride="carousel">
 					
 					<!-- Wrapper for slides -->
@@ -124,10 +135,15 @@ padding: 2%
 				<div id="itemName" class="item-name" th:text="${item.name}"></div>
 				<div class="multiline-ellipse" th:text="${item.description}"></div>
 				<div class="text-center" style="padding-top: 10px;padding-bottom: 10px;">
-				<a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-				<a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a>
+				<a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
+				<span th:if="${item.auction.verified} == 'N'"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\')'"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a></span>
+				
 				</div>
 			</div>
+		</div>
+		<div class="card-style" th:id="${'info'+item.itemId}" style="height: 312px;display:none;">
+
 		</div>
 		</div>
 		</div>
