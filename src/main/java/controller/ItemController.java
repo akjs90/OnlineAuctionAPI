@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,9 +57,6 @@ public class ItemController {
 		UserWrapper userWrapper = (UserWrapper) session.getAttribute("user_info");
 		User user = usrService.findUserByUsername(userWrapper.getUsername());
 		ArrayList<Item> itemsList = service.getItemByUserAndVerified(user, verify);
-		for (Item item : itemsList) {
-			System.out.println(item.getName());
-		}
 		session.setAttribute("items", itemsList);
 		return "item/itemHome";
 	}
@@ -71,6 +69,13 @@ public class ItemController {
 	@RequestMapping(value="/add",method =RequestMethod.POST)
 	public String createItem(Item item,HttpSession session){
 		System.out.println("Item received"+item.getName());
+		if(item.getItemId() != 0){
+			System.out.println("Item received id "+item.getItemId());
+			Item rcvdItem = service.getItem(item.getItemId());
+			item.setItemPictures(rcvdItem.getItemPictures());
+			
+		}
+		
 		session.setAttribute("item", item);
 		return "item/itemPicture";
 	}
@@ -107,6 +112,15 @@ public class ItemController {
 		}	
 		
 	return(new ResponseEntity<>(HttpStatus.OK));
-	} 
+	}
+	
+	@RequestMapping(value="/modify/{id}")
+	public String modifyItem(@PathVariable("id")int id,@ModelAttribute("item") Item item,Model model,HttpSession session){
+		item = service.getItem(id);
+		System.out.println("Item is "+item.getName()+" with item id"+item.getItemId());
+		//item.setName("KKKK");
+		model.addAttribute("item", item);
+		return "item/addItem";
+	}
 	
 }

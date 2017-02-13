@@ -149,7 +149,13 @@ function sendData(){
 				<button type="button" class="btn btn-success form-control" style="cursor:pointer" onclick="document.getElementById('MyFile').click();"><span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>Add Images</button>
 			       <input type="file"  multiple="multiple" id ="MyFile" accept="image/*" style="display:none"/>
 			  </div>
-			 <div id="selectedFiles"></div>
+			 <div id="selectedFiles">
+			 <div th:if="${session.item.itemPictures !=null}"  >
+			 	<img  th:each="pic:${session.item.itemPictures}" th:src="@{/image/__${pic.pictureUrl}__}" class='img-thumbnail img-style '/>
+			 	<button type="button" class="btn btn-danger" onclick="removeImage(this)">X</button>
+			 	<!-- to be modified -->
+			 </div>
+			 </div>
 			     <button type="button" class="btn btn-success form-control" onclick="sendData()">Save</button>
 		</form>
 

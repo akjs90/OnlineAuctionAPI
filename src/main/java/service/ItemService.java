@@ -78,4 +78,8 @@ public class ItemService {
 			
 		return returnedItems;
 	}
+	
+	public Item getItem(int id){
+		return repo.getOne(id);
+	}
 }

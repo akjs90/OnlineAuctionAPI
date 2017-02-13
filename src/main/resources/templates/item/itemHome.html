@@ -135,9 +135,9 @@ padding: 2%
 				<div id="itemName" class="item-name" th:text="${item.name}"></div>
 				<div class="multiline-ellipse" th:text="${item.description}"></div>
 				<div class="text-center" style="padding-top: 10px;padding-bottom: 10px;">
-				<a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
+				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\')'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
 				<span th:if="${item.auction.verified} == 'N'"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\')'"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a></span>
+				<a th:href="@{/item/modify/__${item.itemId}__}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a></span>
 				
 				</div>
 			</div>
