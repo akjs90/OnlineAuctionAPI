@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpSession;
 
@@ -81,35 +82,89 @@ public class ItemController {
 	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public @ResponseBody ResponseEntity<String> saveItemAndPictures(@RequestParam("files")MultipartFile[] files,HttpSession session){
-			
-		Item item = (Item) session.getAttribute("item");
-		item.setRegistrationDate(new Date());
-		
-		UserWrapper uw = (UserWrapper) session.getAttribute("user_info");
-		User user = usrService.findUserByUsername(uw.getUsername());
-		
-		Item savedItem = service.createItem(item, user);
+	public @ResponseBody ResponseEntity<String> saveItemAndPictures(@RequestParam(value="files",required=false)MultipartFile[] files,@RequestParam(value="removedImages",required=false) int[] removedImages, HttpSession session){
 
-		
-		if(savedItem == null )
-			return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
-		
-		for(int i= 0;i<files.length;i++){
-			try{
-				Path itemLocal = Files.createDirectories(rootLoc.resolve("item"+savedItem.getItemId()));
-				Files.copy(files[i].getInputStream(),itemLocal.resolve("item"+savedItem.getItemId()+"_"+(i+1)));
-				ItemPicture itmPic = new ItemPicture();
-				itmPic.setItem(savedItem);
-				String picUrl=savedItem.getItemId()+File.separator+(i+1);
-				itmPic.setPictureUrl(picUrl);
-				service.addPicture(itmPic);
+		Item item = (Item) session.getAttribute("item");
+		if(item.getItemId()==0){// for new Item
+			item.setRegistrationDate(new Date());
+			
+			UserWrapper uw = (UserWrapper) session.getAttribute("user_info");
+			User user = usrService.findUserByUsername(uw.getUsername());
+			
+			Item savedItem = service.createItem(item, user);
+
+			
+			if(savedItem == null )
+				return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+			
+			for(int i= 0;i<files.length;i++){
+				try{
+					Path itemLocal = Files.createDirectories(rootLoc.resolve("item"+savedItem.getItemId()));
+					Files.copy(files[i].getInputStream(),itemLocal.resolve("item"+savedItem.getItemId()+"_"+(i+1)));
+					ItemPicture itmPic = new ItemPicture();
+					itmPic.setItem(savedItem);
+					String picUrl=savedItem.getItemId()+File.separator+(i+1);
+					itmPic.setPictureUrl(picUrl);
+					service.addPicture(itmPic);
+				}
+				catch(IllegalStateException | IOException e){
+					e.printStackTrace();
+					return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+				}
+			}	
+		}
+		else{// modify item
+			
+			if(removedImages != null){
+				try{
+					for(int i = 0;i<removedImages.length;i++){
+						String fileName = "item"+item.getItemId()+"_"+removedImages[i];
+						File serveFile = new File(rootLoc.toString()+File.separator+"item"+item.getItemId()+File.separator+fileName);
+						System.out.println(serveFile.getAbsolutePath());
+						if(serveFile.exists() && serveFile.isFile()){
+							if(serveFile.delete())
+							service.deleteImage(removedImages[i]);
+						}
+						else{
+							System.out.println("from else of removed images..............");
+							return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+						}
+						
+					}
+					
+				}catch (Exception e) {
+					System.out.println("from catch of removed images..............");
+					e.printStackTrace();
+					return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+				}
 			}
-			catch(IllegalStateException | IOException e){
+			if(files != null){
+			try{
+				File serveFile = new File(rootLoc.toString()+File.separator+"item"+item.getItemId());
+				if(serveFile.exists()){
+					File[] filesInIt  = serveFile.listFiles();
+					String fileName = filesInIt[0].getName();
+					System.out.println(fileName);
+					int len =fileName.length();
+					int counter = Integer.parseInt(String.valueOf(fileName.charAt(len-1)))+1;
+					for(int i= 0;i<files.length;i++){
+						Files.copy(files[i].getInputStream(),serveFile.toPath().resolve("item"+item.getItemId()+"_"+(counter)));
+						ItemPicture itmPic = new ItemPicture();
+						itmPic.setItem(item);
+						String picUrl=item.getItemId()+File.separator+(counter++);
+						itmPic.setPictureUrl(picUrl);
+						service.addPicture(itmPic);
+					}
+				}
+			}catch (Exception e) {
+				System.out.println("from catch of new images..............");
 				e.printStackTrace();
 				return(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
 			}
-		}	
+			}
+			Item modifiedItem =service.modifyItem(item);
+		}
+		
 		
 	return(new ResponseEntity<>(HttpStatus.OK));
 	}
