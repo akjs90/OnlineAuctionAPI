@@ -82,4 +82,15 @@ public class ItemService {
 	public Item getItem(int id){
 		return repo.getOne(id);
 	}
+	public Item modifyItem(Item item){
+		Item dbItem = repo.findOne(item.getItemId());
+		dbItem.setBasePrice(item.getBasePrice());
+		dbItem.setDescription(item.getDescription());
+		dbItem.setName(item.getName());
+		return repo.save(dbItem);
+		
+	}
+	public void deleteImage(int id){
+		picRepo.delete(id);
+	}
 }

@@ -54,6 +54,7 @@ display:none;
            
 var selDiv="";
 var selFile = [];
+var removedImgs = [];
 document.addEventListener("DOMContentLoaded", init, false);
 function init(){
 	document.querySelector('#MyFile').addEventListener('change',handleFileSelect,false);
@@ -117,9 +118,13 @@ function sendData(){
 	        xhr.setRequestHeader(header, token);
 	    }
 	});
-		
+	
+	
 	for(var i= 0; i < selFile.length;i++){
 			fd.append('files',selFile[i].file);
+	}
+	for(var i= 0; i < removedImgs.length;i++){
+		fd.append('removedImages',removedImgs[i]);
 	}
 	
 	$.ajax({
@@ -137,6 +142,15 @@ function sendData(){
 		}
 	});
 }
+function removePreviousImage(ele,id){
+	//console.log('removed '+id);
+	removedImgs.push(id);
+	/* console.log("Removed array has--")
+	for(var i = 0; i<removedImgs.length;i++){
+		console.log('id '+removedImgs[i]);
+	} */
+	ele.parentElement.style.display='none';
+}
 /*]]>*/
 </script>
 </head>
@@ -150,9 +164,9 @@ function sendData(){
 			       <input type="file"  multiple="multiple" id ="MyFile" accept="image/*" style="display:none"/>
 			  </div>
 			 <div id="selectedFiles">
-			 <div th:if="${session.item.itemPictures !=null}"  >
-			 	<img  th:each="pic:${session.item.itemPictures}" th:src="@{/image/__${pic.pictureUrl}__}" class='img-thumbnail img-style '/>
-			 	<button type="button" class="btn btn-danger" onclick="removeImage(this)">X</button>
+			 <div class='show-image'  th:if="${session.item.itemPictures !=null}"  th:each="pic:${session.item.itemPictures}">
+			 	<img  th:src="@{/image/__${pic.pictureUrl}__}" class='img-thumbnail img-style '/>
+			 	<button type="button" class="btn btn-danger" th:onclick="'removePreviousImage(this,__${pic.id}__)'">X</button>
 			 	<!-- to be modified -->
 			 </div>
 			 </div>
