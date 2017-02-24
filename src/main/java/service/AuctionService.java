@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import repository.AuctionRepository;
@@ -59,5 +60,10 @@ public class AuctionService {
 		}
 		System.out.println(li.size());
 		return ongoingAuctions;
+	}
+	
+	//@Scheduled(fixedRate=1500)
+	public void checkForAuctionCompletion(){
+		System.out.println("Scheduling is working");
 	}
 }

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import entity.User;
-import entity.UserRole;
 import entity.UserWrapper;
-import repository.UserRoleRepository;
 import service.UserService;
 
 @Controller
@@ -41,10 +40,21 @@ public class HomeController {
 		service.registerUser(u);
 		return "redirect:/r";
 	}
-
+	
 	@ModelAttribute("user_info")
-	private UserWrapper createSession() {
-		return new UserWrapper();
+	private UserWrapper getAuth(SecurityContextHolder sec) {
+		Object obj=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserWrapper uw=new UserWrapper();
+		if(obj instanceof org.springframework.security.core.userdetails.User){
+			org.springframework.security.core.userdetails.User u=(org.springframework.security.core.userdetails.User)(obj);
+			
+			Object[] authorities=  u.getAuthorities().toArray();
+			uw.setRole(authorities[0].toString());
+			uw.setUsername(u.getUsername());
+			System.out.println("home controller "+uw.getUsername()+" --- "+uw.getRole());
+		}
+		
+		return uw;
 	}
 
 	@RequestMapping(value = "login")

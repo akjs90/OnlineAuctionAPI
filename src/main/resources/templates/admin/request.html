@@ -84,6 +84,7 @@
 					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="ongoing">
+				    <div id="error_on"></div>
 					<div class="list-group" id="curr_auction">
 						<div class="list-group-item">
 							<div class="row">
@@ -238,11 +239,13 @@
 						timer(e['timeRemaining'], id);
 	
 					});
+					$('#error_on').empty();
 					$('#curr_auction').html(string);
 	
 				},
 				error : function(data) {
-					$('#ongoing').html("<h1>ERROR</h1>");
+					$('#curr_auction').empty();
+					$('#error_on').html("<h1>ERROR</h1>");
 				}
 			});
 		});

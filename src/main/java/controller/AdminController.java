@@ -14,8 +14,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,7 +41,23 @@ public class AdminController {
 
 	@Autowired
 	AuctionService auctionServ;
-
+		
+	
+	@ModelAttribute("user_info")
+	private UserWrapper getAuth(SecurityContextHolder sec) {
+		Object obj=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserWrapper uw=new UserWrapper();
+		if(obj instanceof org.springframework.security.core.userdetails.User){
+			org.springframework.security.core.userdetails.User u=(org.springframework.security.core.userdetails.User)(obj);
+			
+			Object[] authorities=  u.getAuthorities().toArray();
+			uw.setRole(authorities[0].toString());
+			uw.setUsername(u.getUsername());
+			System.out.println("home controller "+uw.getUsername()+" --- "+uw.getRole());
+		}
+		
+		return uw;
+	}
 	@RequestMapping("people")
 	public String getPeopleList(@RequestParam(name = "p", defaultValue = "1") Integer page,
 			@RequestParam(name = "l", defaultValue = "10") Integer size, ModelMap map) {
