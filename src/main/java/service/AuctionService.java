@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import repository.AuctionRepository;
 import entity.Auction;
+import entity.Item;
+import entity.ItemPicture;
 import entity.OngoingAuction;
 
 @Service
@@ -61,7 +64,17 @@ public class AuctionService {
 		System.out.println(li.size());
 		return ongoingAuctions;
 	}
-	
+	public String[] getItemImages(int auction_id){
+		Item i=auctionRepo.findItemByItemId(auction_id);
+		if(null==i)
+			return null;
+		int k=0;
+		String[] urls=new String[i.getItemPictures().size()];
+		for(ItemPicture pic:i.getItemPictures()){
+			urls[k++]=pic.getPictureUrl();
+		}
+		return urls;
+	}
 	//@Scheduled(fixedRate=1500)
 	public void checkForAuctionCompletion(){
 		System.out.println("Scheduling is working");

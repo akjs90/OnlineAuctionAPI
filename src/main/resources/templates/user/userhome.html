@@ -7,5 +7,19 @@
 <body>
 <div th:replace="fragments/header::navigation"></div>
 <h1>Welcome , <span th:text="${user_info.username}"></span></h1>
+<script th:inline="javascript">
+var source=new EventSource('/auction/auc-ticker');
+source.addEventListener('auction',function(event){
+	console.log(event.data);
+});
+source.addEventListener('error', function(e) {
+	  if (e.currentTarget.readyState == EventSource.CLOSED) {
+	    console.log("source was closed");
+	  } else {
+	    // Close it yourself
+	    source.close();
+	  }
+	});
+</script>
 </body>
 </html>

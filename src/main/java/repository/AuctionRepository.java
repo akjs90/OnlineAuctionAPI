@@ -42,5 +42,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	
 	@Query(value="Select a.item from Auction a where a.user =:user and a.verified =:verified")
 	List<Item> findItemByUserAndVerified(@Param("user") User user, @Param("verified") char verified);
+	
+	@Query(value="SELECT a.item from Auction a where a.itemId=:id")
+	Item findItemByItemId(@Param("id")int auction_id);
 
 }

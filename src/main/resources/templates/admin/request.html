@@ -5,29 +5,37 @@
 <title>Insert title here</title>
 <style type="text/css">
 .hide-bullets {
-    list-style:none;
-    margin-left: -40px;
-    margin-top:20px;
+	list-style: none;
+	margin-left: -40px;
+	margin-top: 20px;
 }
 
 .thumbnail {
-    padding: 0;
+	padding: 0;
+}
+
+.thumbnail>img {
+	width: auto;
+	height: 100px !important;
 }
 
 .carousel-inner>.item>img, .carousel-inner>.item>a>img {
-    width: 100%;
+	width: auto;
+	height: 300px;
+	margin: auto;
 }
 
 .col-sm-3 a {
-    border: 1px solid transparent;
-    border-radius: 0;
-    transition: all 3s ease;
+	border: 2px solid transparent;
+	border-radius: 0;
+	transition: all 3s ease;
 }
 
 .col-sm-3 a:hover {
-    border: 1px solid #ff4647;
-    border-radius: 100% 60% / 30% 10%;
-    background: linear-gradient(rgba(56,123,131,0.7),rgba(56,123,131,0.7));
+	border: 2px solid #4CAF50;
+	border-radius: 100% 60%/30% 10%;
+	background: linear-gradient(rgba(56, 123, 131, 0.7),
+		rgba(56, 123, 131, 0.7));
 }
 </style>
 </head>
@@ -41,12 +49,9 @@
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#request"
-					aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
-				<li role="presentation"><a href="#ongoing"
-					aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
-				<li role="presentation"><a href="#complete"
-					aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
+				<li role="presentation" class="active"><a href="#request" aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
+				<li role="presentation"><a href="#ongoing" aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
+				<li role="presentation"><a href="#complete" aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
 			</ul>
 
 			<!-- Tab panes -->
@@ -54,34 +59,28 @@
 				<div role="tabpanel" class="tab-pane active" id="request">
 					<div class="list-group">
 						<div th:each="request:${auction_request}" class="list-group-item">
-							<span th:text="${request.item.name}" style="font-size: 16px;">Item
-								Name</span>
-							<button class="btn btn-default verify" style="float: right;"
-								data-toggle="tooltip" data-placement="left" title="Verify">
+							<span th:text="${request.item.name}" style="font-size: 16px;">Item Name</span>
+							<button class="btn btn-default verify" style="float: right;" data-toggle="tooltip" data-placement="left" title="Verify">
 								<span class="glyphicon glyphicon-ok"></span>
 							</button>
-							<button class="btn btn-default reject" style="float: right;"
-								data-toggle="tooltip" data-placement="left" title="Reject">
+							<button class="btn btn-default reject" style="float: right;" data-toggle="tooltip" data-placement="left" title="Reject">
 								<span class="glyphicon glyphicon-trash"></span>
 							</button>
-							<button class="btn btn-default" style="float: right;"
-								data-toggle="tooltip" data-placement="left" title="View Images">
+							<button class="btn btn-default view-img" style="float: right;" data-toggle="tooltip" data-placement="left" title="View Images">
 								<span class="glyphicon glyphicon-picture"></span>
 							</button>
-							<button class="btn btn-default" style="float: right;"
-								data-toggle="tooltip" data-placement="left" title="Description">
+							<button class="btn btn-default item-desc" style="float: right;" data-toggle="tooltip" data-placement="left" title="Description">
 								<span class="glyphicon glyphicon-info-sign"></span>
 							</button>
 							<p>
-								Requested By <span th:text="${request.user.name}">name of
-									user</span> on <span th:text="${request.item.registrationDate}">date</span>
+								Requested By <span th:text="${request.user.name}">name of user</span> on <span th:text="${request.item.registrationDate}">date</span>
 							</p>
 							<input type="hidden" name="aid" th:value="${request.itemId}" />
 						</div>
 					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="ongoing">
-				    <div id="error_on"></div>
+					<div id="error_on"></div>
 					<div class="list-group" id="curr_auction">
 						<div class="list-group-item">
 							<div class="row">
@@ -90,22 +89,16 @@
 								</div>
 								<div class="col-md-4">
 									<div>
-										<span
-											style="font-size: 16px; font-weight: 700; margin-right: 30px;">Time
-											Left</span> <span style="font-size: 16px; font-weight: 700">02d
-											16h 12m 52s</span>
+										<span style="font-size: 16px; font-weight: 700; margin-right: 30px;">Time Left</span> <span style="font-size: 16px; font-weight: 700">02d 16h 12m 52s</span>
 									</div>
 									<div>
-										<span style="font-size: 16px; margin-right: 12px;">Current
-											Price</span><span style="font-size: 16px;">Rs 14023.00</span>
+										<span style="font-size: 16px; margin-right: 12px;">Current Price</span><span style="font-size: 16px;">Rs 14023.00</span>
 									</div>
 									<div>
-										<span style="font-size: 16px; margin-right: 36px;">Total
-											Bids</span><span style="font-size: 16px;">75</span>
+										<span style="font-size: 16px; margin-right: 36px;">Total Bids</span><span style="font-size: 16px;">75</span>
 									</div>
 									<div>
-										<span style="font-size: 16px; margin-right: 14px;">Total
-											Bidders</span><span style="font-size: 16px;">15</span>
+										<span style="font-size: 16px; margin-right: 14px;">Total Bidders</span><span style="font-size: 16px;">15</span>
 									</div>
 								</div>
 							</div>
@@ -115,24 +108,36 @@
 				<div role="tabpanel" class="tab-pane" id="complete">...</div>
 			</div>
 		</div>
-
-		<!-- Modal for Images -->
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary btn-lg"
-			data-toggle="modal" data-target="#imageViewer">Launch demo
-			modal</button>
-
+	
 		<!-- Modal -->
-		<div class="modal fade" id="imageViewer" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel">
+		<div class="modal fade" id="imageViewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
-			
-					</div>
-				</div>
-			</div>
-		</div>
+					   <!-- image viewer -->
+						<div class="row">
+							<div class="col-sm-6" id="slider-thumbs">
+								<!-- Bottom switcher of slider -->
+								<ul class="hide-bullets img-thumbs"></ul>
+							</div><!-- thumbs -->
+							<div class="col-sm-6">
+								<div class="col-xs-12" id="slider">
+									<!-- Top part of the slider -->
+									<div class="row">
+										<div class="col-sm-12" id="carousel-bounding-box">
+											<div class="carousel slide" id="myCarousel">
+												<!-- Carousel items -->
+												<div class="carousel-inner carousel-img-thumb"></div>
+											</div>
+										</div>
+									</div>
+								</div><!-- Slider -->
+							</div>
+						</div><!-- end of image viewer -->
+					</div><!-- modal body -->
+				</div><!--modal content  -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal -->
 		<!--  End of Modal for Images  -->
 
 		<!-- Verification Modal -->
@@ -147,12 +152,7 @@
 					</div>
 					<div class="modal-body">
 						<form action="#" id="verify-form">
-							<input type="datetime-local" name="start-time"
-								placeholder="Start Date and Time"
-								class="form-control form-group" /> <input type="datetime-local"
-								name="end-time" placeholder="End Date and Time"
-								class="form-control form-group" /> <input type="hidden"
-								name="verify_auc_id" />
+							<input type="datetime-local" name="start-time" placeholder="Start Date and Time" class="form-control form-group" /> <input type="datetime-local" name="end-time" placeholder="End Date and Time" class="form-control form-group" /> <input type="hidden" name="verify_auc_id" />
 							<button class="btn btn-success btn-block" type="submit">Verify</button>
 							<button class="btn btn-default btn-block" data-dismiss="modal">Close</button>
 						</form>
@@ -161,219 +161,8 @@
 			</div>
 		</div>
 		<!-- end of verification modal -->
-		<div class="row">
-            <div class="col-sm-6" id="slider-thumbs">
-                <!-- Bottom switcher of slider -->
-                <ul class="hide-bullets">
-                    <li class="col-sm-3">
-                        <a class="thumbnail" id="carousel-selector-0"><img th:src="@{/image/1/1}"/></a>
-                    </li>
-                    <li class="col-sm-3">
-                        <a class="thumbnail" id="carousel-selector-1"><img th:src="@{/image/1/2}"/></a>
-                    </li>
-                    <li class="col-sm-3">
-                        <a class="thumbnail" id="carousel-selector-2"><img th:src="@{/image/1/3}"/></a>
-                    </li>
-                    <li class="col-sm-3">
-                        <a class="thumbnail" id="carousel-selector-3"><img th:src="@{/image/1/4}"/></a>
-                    </li>
-                    <li class="col-sm-3">
-                        <a class="thumbnail" id="carousel-selector-4"><img th:src="@{/image/1/5}"/></a>
-                    </li>
-                    <li class="col-sm-3">
-                        <a class="thumbnail" id="carousel-selector-5"><img th:src="@{/image/1/6}"/></a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-sm-6">
-                <div class="col-xs-12" id="slider">
-                    <!-- Top part of the slider -->
-                    <div class="row">
-                        <div class="col-sm-12" id="carousel-bounding-box">
-                            <div class="carousel slide" id="myCarousel">
-                                <!-- Carousel items -->
-                                <div class="carousel-inner">                                    
-                                    <div class="item active" data-slide-number="1"><img th:src="@{/image/1/1}"/></div>
-									<div class="item" data-slide-number="2"><img th:src="@{/image/1/2}"/></div>
-									<div class="item" data-slide-number="3"><img th:src="@{/image/1/3}"/></div>
-									<div class="item" data-slide-number="4"><img th:src="@{/image/1/4}"/></div>
-									<div class="item" data-slide-number="5"><img th:src="@{/image/1/5}"/></div>
-									<div class="item" data-slide-number="6"><img th:src="@{/image/1/6}"/></div>
-                                </div>
-                                <!-- Carousel nav -->
-                                <!--<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
-                                </a>
-                                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                </a>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
+
 	</div>
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		var _element;
-		$('document').ready(function() {
-	
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			$.ajaxSetup({
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader(header, token);
-					console.log('set');
-				}
-			});
-			  $('#myCarousel').carousel({
-	                interval: 5000
-	        });
-	 
-	        //Handles the carousel thumbnails
-	        $('[id^=carousel-selector-]').click(function () {
-	        var id_selector = $(this).attr("id");
-	        try {
-	            var id = /-(\d+)$/.exec(id_selector)[1];
-	            console.log(id_selector, id);
-	            jQuery('#myCarousel').carousel(parseInt(id));
-	        } catch (e) {
-	            console.log('Regex failed!', e);
-	        }
-	    });
-	        // When the carousel slides, auto update the text
-	        $('#myCarousel').on('slid.bs.carousel', function (e) {
-	                 var id = $('.item.active').data('slide-number');
-	                $('#carousel-text').html($('#slide-content-'+id).html());
-	        });
-		});
-		$('a[href="#ongoing"]').on('hide.bs.tab', function(e) {
-			for (i = 0; i < intervals.length; i++) {
-				clearInterval(intervals[i]);
-			}
-			intervals = [];
-			
-		});
-		$('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
-			console.log(e.target);
-			for (i = 0; i < intervals.length; i++) {
-				clearInterval(intervals[i]);
-			}
-			intervals = [];
-			$.ajax({
-				url : 'ongoing',
-				success : function(data) {
-					//$('#ongoing').html("<h1>HHHHH</h1>");
-					var string = "";
-					data.forEach(function(e) {
-						console.log(e['itemName']);
-						var id = e['auction_id'];
-						string += '<div class="list-group-item"><div class="row"><div class="col-md-8"><p style="font-size: 16px;">' + e['itemName'] + '</p></div><div class="col-md-4">';
-						string += '<div><span style="font-size: 16px; font-weight: 700;margin-right: 30px;">Time Left</span> <span style="font-size: 16px; font-weight: 700" id="time' + id + '">' + e['timeRemaining'] + '</span></div>';
-						string += '<div><span style="font-size: 16px;margin-right: 12px;">Current Price</span><span style="font-size: 16px;" id="price' + id + '">Rs ' + e['current_bid'] + '</span></div>';
-						string += '<div><span style="font-size: 16px;margin-right: 36px;">Total Bids</span><span style="font-size: 16px;" id="bids' + id + '">'+ e['totalBids']+'</span></div>';
-						string += '<div><span style="font-size: 16px;margin-right: 14px;">Total Bidders</span><span style="font-size: 16px;" id="bidders' + id + '">'+ e['totalBidders']+'</span></div>';
-						string += '</div></div></div>';
-						timer(e['timeRemaining'], id);
-	
-					});
-					$('#error_on').empty();
-					$('#curr_auction').html(string);
-	
-				},
-				error : function(data) {
-					$('#curr_auction').empty();
-					$('#error_on').html("<h1>ERROR</h1>");
-				}
-			});
-		});
-		$('a[href="#complete"]').on('shown.bs.tab', function(e) {
-			console.log(e.target);
-			$.ajax({
-				url : 'completed',
-				success : function(data) {},
-				error : function(e) {}
-			});
-		});
-		$('.reject').on('click', function(e) {
-			e.preventDefault();
-			var val = $(this).parent().find('input[name="aid"]').val();
-			var cur = $(this).parent();
-			$.ajax({
-				url : 'verify',
-				method : 'put',
-				data : {
-					id : val,
-				},
-				success : function(data, status) {
-					cur.hide(500, function() {
-						$(this).remove();
-					});
-				},
-				error : function(data, status) {
-					console.log(status);
-				}
-			});
-		});
-		$('.verify').on('click', function(e) {
-			var val = $(this).parent().find('input[name="aid"]').val();
-			$('input[name=verify_auc_id]').val(val);
-			_element = $(this).parent();
-			$('#myModal').modal('show');
-		});
-		$('#verify-form').on('submit', function(e) {
-			e.preventDefault();
-			var form_data = $(this).serialize();
-			$.ajax({
-				url : 'verify',
-				method : 'post',
-				data : form_data,
-				success : function(data, status) {
-					$('#myModal').modal('hide');
-					_element.hide(500, function() {
-						$(this).remove();
-					});
-				},
-				error : function(data, status) {
-					console.error("Failure");
-				}
-			});
-	
-		});
-		var intervals = [];
-		var timer = function(miliseconds, id) {
-			var distance = miliseconds;
-			// Update the count down every 1 second
-			var x = setInterval(function() {
-	
-				// Get todays date and time
-				var now = new Date().getTime();
-	
-				// Find the distance between now an the count down date
-				distance -= 1000;
-				// Time calculations for days, hours, minutes and seconds
-				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-	
-				// Display the result in the element with id="demo"
-				document.getElementById("time" + id).innerHTML = days + "d " + hours + "h "
-					+ minutes + "m " + seconds + "s ";
-	
-				// If the count down is finished, write some text 
-	
-				if (distance < 0) {
-					clearInterval(x);
-					document.getElementById("time" + id).innerHTML = "EXPIRED";
-				}
-	
-	
-			}, 1000);
-			intervals.push(x);
-		};
-		/*]]>*/
-	</script>
+	<script type="text/javascript" th:src="@{/js/auction/adminrequests.js}"></script>
 </body>
 </html>
