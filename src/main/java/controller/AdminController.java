@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import entity.OngoingAuction;
 import entity.UserWrapper;
@@ -37,11 +38,12 @@ import service.UserService;
 @SessionAttributes(value = "user_info", types = { UserWrapper.class })
 public class AdminController {
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Autowired
-	AuctionService auctionServ;
-		
+	private AuctionService auctionServ;
+	
+	private SseEmitter adminEmitter=new SseEmitter(-1L);
 	
 	@ModelAttribute("user_info")
 	private UserWrapper getAuth(SecurityContextHolder sec) {
@@ -143,6 +145,9 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.OK);		//send mail of approval to user.
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+	@RequestMapping("/admin-events")
+	public SseEmitter adminEventsBroadcast(){
+		return adminEmitter;
+	}
 	
 }

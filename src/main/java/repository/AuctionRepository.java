@@ -45,5 +45,10 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	
 	@Query(value="SELECT a.item from Auction a where a.itemId=:id")
 	Item findItemByItemId(@Param("id")int auction_id);
+	
+	@Modifying
+	@Transactional
+	@Query(value="UPDATE Auction a SET a.verified='C' WHERE current_timestamp>a.endDate AND a.verified!='C'")
+	int markCompleted();
 
 }

@@ -75,8 +75,9 @@ public class AuctionService {
 		}
 		return urls;
 	}
-	//@Scheduled(fixedRate=1500)
+	@Scheduled(cron="0 30 * * * *")
 	public void checkForAuctionCompletion(){
-		System.out.println("Scheduling is working");
+		int completed = auctionRepo.markCompleted();
+		System.out.println("Completed "+ completed+" Auctions "+new Date().getTime());
 	}
 }
