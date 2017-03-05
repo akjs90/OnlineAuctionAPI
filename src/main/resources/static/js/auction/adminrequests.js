@@ -10,6 +10,14 @@ $('document').ready(function() {
         }
     });
 });
+var requestLoad=function(){
+	$.ajax({
+		url:'requested'
+	});
+}
+$('a[href="#request"]').on('shown.bs.tab',function(e){
+	
+});
 $('a[href="#ongoing"]').on('hide.bs.tab', function(e) {
     for (i = 0; i < intervals.length; i++) {
         clearInterval(intervals[i]);
@@ -23,7 +31,7 @@ $('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
     }
     intervals = [];
     $.ajax({
-        url: 'ongoing',
+        url: '/auction/ongoing',
         success: function(data) {
             //$('#ongoing').html("<h1>HHHHH</h1>");
             var string = "";
@@ -56,9 +64,36 @@ $('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
 $('a[href="#complete"]').on('shown.bs.tab', function(e) {
     console.log(e.target);
     $.ajax({
-        url: 'completed',
-        success: function(data) {},
-        error: function(e) {}
+        url: '/auction/completed',
+        success: function(data) {
+        	var string = "";
+        	data=JSON.parse(data);
+        	data.forEach(function(e){
+        		var id=e['auction_id'];
+        		var start=new Date(e['start_date']);
+        		var end=new Date(e['end_date']);
+        		console.log(e['item_name']);
+        		string += '<div class="list-group-item"><div class="row"><div class="col-md-6"><p style="font-size: 16px;">' + e['item_name'] +
+                '</p></div><div class="col-md-6">';
+        		string += '<div><span style="font-size: 16px;margin-right: 30px;">Start Date & Time</span> <span style="font-size: 16px; font-weight: 700">' +
+                start.toDateString()+' '+start.toLocaleTimeString() + '</span></div>';
+        		string += '<div><span style="font-size: 16px;margin-right: 30px;">End Date & Time</span> <span style="font-size: 16px; font-weight: 700">' +
+        		end.toDateString()+' '+end.toLocaleTimeString()+ '</span></div>';
+        		string += '<div><span style="font-size: 16px;margin-right: 12px;">Winning Bid</span><span style="font-size: 16px;" id="price' + id + '">Rs ' +
+                e['wining_bid'] + '</span></div>';
+        		string += '<div><span style="font-size: 16px;margin-right: 36px;">Total Bids</span><span style="font-size: 16px;" id="bids' + id + '">' +
+                e['total_bids'] + '</span></div>';
+        		string += '<div><span style="font-size: 16px;margin-right: 14px;">Total Bidders</span><span style="font-size: 16px;" id="bidders' + id + '">' +
+                e['total_bidders'] + '</span></div>';
+        		string += '</div></div></div>';
+            
+        	});
+        	$('#completed_auc').html(string);
+        	
+        },
+        error: function(e) {
+        	
+        }
     });
 });
 $('.reject').on('click', function(e) {

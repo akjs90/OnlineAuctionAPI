@@ -121,16 +121,7 @@ public class AdminController {
 		return "admin/completed";
 	}
 
-	@RequestMapping("ongoing")
-	@ResponseBody
-	public ResponseEntity<List<OngoingAuction>> getOngoingAuction(ModelMap map) {
-		List<OngoingAuction> list=auctionServ.getOngoingAuctionList();
-		if(null==list)
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		return new ResponseEntity<>(list,HttpStatus.OK);
-	}
-
-	@RequestMapping(value="verify",method=RequestMethod.PUT, params="id",produces=MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value="verify",method=RequestMethod.PUT, params="id",produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> rejectAuction(@RequestParam(required=true,name="id" )int auction_id) {
 		if (auctionServ.rejectAuction(auction_id))
