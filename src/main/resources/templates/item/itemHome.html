@@ -7,13 +7,14 @@
 <script type="text/javascript" th:src="@{/js/jquery-3.1.0.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript">
-
-function toggleCard(id){
+/*<![CDATA[*/
+function toggleCard(id,mili){
 	console.log("called");
 	if(document.getElementById('info'+id).style.display== "none"){
 		console.log("in if");
 		document.getElementById('card'+id).style.display = "none";
 		document.getElementById('info'+id).style.display = "block";	
+		//timer(mili,id);
 	}
 	else{
 		console.log("in else");
@@ -22,6 +23,39 @@ function toggleCard(id){
 	}
 	
 }
+
+var timer = function(miliseconds, id) {
+    var distance = miliseconds;
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+        // Get todays date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now an the count down date
+        distance -= 1000;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) /
+            (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) /
+            (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        document.getElementById("timer" + id).innerHTML = days + "d " +
+            hours + "h " + minutes + "m " + seconds + "s ";
+
+        // If the count down is finished, write some text 
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer" + id).innerHTML = "EXPIRED";
+        }
+
+    }, 1000);
+};
+/*]]>*/
 </script>
 <style type="text/css">
 .form-style {
@@ -152,7 +186,7 @@ padding: 2%
 				<div id="itemName" class="item-name" th:text="${item.name}"></div>
 				<div class="multiline-ellipse" th:text="${item.description}"></div>
 				<div class="text-center" style="padding-top: 10px;padding-bottom: 10px;">
-				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\')'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
+				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\','+${item.auction.endDate.Time}+')'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
 				<span th:if="${item.auction.verified} == 'N'"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 				<a th:href="@{/item/modify/__${item.itemId}__}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a>
 				</span>
@@ -169,7 +203,7 @@ padding: 2%
 				To : <span th:text="${#dates.format(item.auction.endDate,'dd MMMM yyyy HH:mm')}"></span>
 			</div>
 			<div th:if="${item.auction.verified} == 'A' and ${session.X} == 'notX'">
-					
+					<div th:id="${'timer'+item.itemId}"></div>
 			</div>
 			<div th:if="(${item.auction.verified} == 'N' or ${item.auction.verified} == 'A') and ${session.X} == 'notX'"  th:text="${item.description}"></div>
 		</div>
