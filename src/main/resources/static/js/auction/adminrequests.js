@@ -50,10 +50,12 @@ $('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
                     e['totalBidders'] + '</span></div>';
                 string += '</div></div></div>';
                 timer(e['timeRemaining'], id);
-
+               
             });
             $('#error_on').empty();
             $('#curr_auction').html(string);
+            $('a[href="#ongoing"]').html('Ongoing <span class="badge">'+data.length+'</span>');
+            
         },
         error: function(data) {
             $('#curr_auction').empty();
@@ -89,7 +91,7 @@ $('a[href="#complete"]').on('shown.bs.tab', function(e) {
             
         	});
         	$('#completed_auc').html(string);
-        	
+        	$('a[href="#complete"]').html('Complete <span class="badge">'+data.length+'</span>');
         },
         error: function(e) {
         	

@@ -51,7 +51,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	@Query(value="UPDATE Auction a SET a.verified='C' WHERE current_timestamp>a.endDate AND a.verified!='N' AND a.verified!='C'")
 	int markCompleted();
 
-	@Query(value="SELECT a.item_id,i.name,a.start_date,a.end_date,max(b.bid_price) as `bid_price`,count(b.bid_price) as `Total Bids` , count(distinct(b.bidder_id)) as `total bidders` FROM `auction` as a Left join `bids` as b ON item_id=auction_id Left join `item` as i ON i.item_id=a.item_id WHERE a.verified='C' AND current_timestamp>a.end_date AND a.verified!='N' group by i.item_id order by a.end_date desc ", nativeQuery=true)
+	@Query(value="SELECT a.item_id,i.name,a.start_date,a.end_date,max(b.bid_price) as `bid_price`,count(b.bid_price) as `Total Bids` , count(distinct(b.bidder_id)) as `total bidders` FROM `auction` as a Left join `bids` as b ON item_id=auction_id Left join `item` as i ON i.item_id=a.item_id WHERE a.verified='C' OR a.verified='A' AND current_timestamp>a.end_date  group by i.item_id order by a.end_date desc ", nativeQuery=true)
 	List<Object[]> getCompletedAuctions();
 
 }
