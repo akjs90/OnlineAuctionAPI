@@ -5,15 +5,21 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import repository.AuctionRepository;
 import entity.Auction;
+import entity.Item;
+import entity.ItemPicture;
 import entity.OngoingAuction;
 
 @Service
@@ -61,9 +67,39 @@ public class AuctionService {
 		System.out.println(li.size());
 		return ongoingAuctions;
 	}
-	
-	//@Scheduled(fixedRate=1500)
+	public String[] getItemImages(int auction_id){
+		Item i=auctionRepo.findItemByItemId(auction_id);
+		if(null==i)
+			return null;
+		int k=0;
+		String[] urls=new String[i.getItemPictures().size()];
+		for(ItemPicture pic:i.getItemPictures()){
+			urls[k++]=pic.getPictureUrl();
+		}
+		return urls;
+	}
+	@Scheduled(cron="0 0/30 * * * *")
 	public void checkForAuctionCompletion(){
-		System.out.println("Scheduling is working");
+		int completed = auctionRepo.markCompleted();
+		System.out.println("Completed "+ completed+" Auctions "+new Date().getTime());
+	}
+	
+	public JSONArray getCompletedAuctions(){
+	  List<Object[]> list=auctionRepo.getCompletedAuctions();
+	  JSONArray arr=new JSONArray();
+	  for(Object[] auc:list){
+		  Date d1=(Date) auc[2];
+		  Date d2=(Date) auc[3];
+		  JSONObject obj=new JSONObject();
+		  obj.put("auction_id", auc[0]);
+		  obj.put("item_name", auc[1]);
+		  obj.put("start_date", d1.getTime());
+		  obj.put("end_date", d2.getTime());
+		  obj.put("wining_bid", auc[4]);
+		  obj.put("total_bids", auc[5]);
+		  obj.put("total_bidders", auc[6]);
+		  arr.put(obj);
+	  }
+	  return arr;
 	}
 }

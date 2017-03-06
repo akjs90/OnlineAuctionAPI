@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import entity.User;
 import entity.UserWrapper;
+import service.AuctionService;
 import service.UserService;
 
 @Controller
@@ -27,6 +30,9 @@ import service.UserService;
 public class HomeController {
 	@Autowired
 	UserService service;
+	
+	@Autowired
+	AuctionService aucServ;
 
 	private final Path rootLoc = Paths.get("uploadedImages");
 
@@ -105,13 +111,13 @@ public class HomeController {
 		Path p=Paths.get("uploadedImages", "item"+path,"item"+path+"_"+name);
 		if (!serveFile.exists())
 			return null;
-		else {
-			File[] listFiles = serveFile.listFiles();
-			for (File file : listFiles) {
-				System.out.println(file.getName());
-			}
-			
-		}
 		return Files.readAllBytes(p);
+	}
+	@RequestMapping("/getimages/{auction_id}")
+	public @ResponseBody ResponseEntity<String[]>  getImages(@PathVariable("auction_id")int auction_id){
+		String[] urls=aucServ.getItemImages(auction_id);
+		if(null==urls)
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<String[]>(urls, HttpStatus.OK);
 	}
 }
