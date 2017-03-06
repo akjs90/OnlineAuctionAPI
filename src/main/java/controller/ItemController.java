@@ -76,6 +76,10 @@ public class ItemController {
 		User user = usrService.findUserByUsername(userWrapper.getUsername());
 		ArrayList<Item> itemsList = service.getItemByUserAndVerified(user, verify);
 		session.setAttribute("items", itemsList);
+		if(verify =='X')
+			session.setAttribute("X", "X");
+		else
+			session.setAttribute("X", "notX");
 		return "item/itemHome";
 	}
 

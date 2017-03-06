@@ -67,7 +67,7 @@ public class ItemService {
 		if(verified =='X'){
 			returnedAuction = (ArrayList<Auction>) auctionRepo.findByUserAndVerified(user, 'A');
 			for (Auction auction : returnedAuction) {
-				if(auction.getStartDate().before(new Date())){
+				if(auction.getStartDate().before(new Date()) && auction.getEndDate().after(new Date())){
 					returnedItems.add(auction.getItem());
 				}
 			}

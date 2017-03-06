@@ -6,6 +6,23 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 <script type="text/javascript" th:src="@{/js/jquery-3.1.0.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+
+function toggleCard(id){
+	console.log("called");
+	if(document.getElementById('info'+id).style.display== "none"){
+		console.log("in if");
+		document.getElementById('card'+id).style.display = "none";
+		document.getElementById('info'+id).style.display = "block";	
+	}
+	else{
+		console.log("in else");
+		document.getElementById('card'+id).style.display = "block";
+		document.getElementById('info'+id).style.display = "none";
+	}
+	
+}
+</script>
 <style type="text/css">
 .form-style {
 	max-width: 500px;
@@ -87,7 +104,7 @@ padding: 2%
 			Verified<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
 		</button>
 	</form>
-	<form  class="form-style"  th:action="@{/item/X}">
+	<form  class="form-style"  th:action="@{/item/X(X=1)}">
 		<button type="submit" class="btn btn-success form-control">
 			 Running<span class="glyphicon glyphicon-chevron-right" style="float: right;" aria-hidden="true"></span>
 		</button>
@@ -137,13 +154,24 @@ padding: 2%
 				<div class="text-center" style="padding-top: 10px;padding-bottom: 10px;">
 				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\')'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
 				<span th:if="${item.auction.verified} == 'N'"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-				<a th:href="@{/item/modify/__${item.itemId}__}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a></span>
+				<a th:href="@{/item/modify/__${item.itemId}__}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size: 30px;"></span></a>
+				</span>
 				
 				</div>
 			</div>
 		</div>
 		<div class="card-style" th:id="${'info'+item.itemId}" style="height: 312px;display:none;">
-
+			<div id="itemName" class="item-name" th:text="${item.name}"></div>
+			<hr style="margin-top: 0px; margin-bottom: 0px;"/>
+			<div id="itemPrice" class="item-name" th:text="&#8377;__${item.basePrice}__"></div>
+			<div id="auctionTiming" th:if= "${item.auction.verified} == 'A' and ${session.X} == 'notX'" >
+				From : <span th:text="${#dates.format(item.auction.startDate,'dd MMMM yyyy HH:mm')}"></span><br/>
+				To : <span th:text="${#dates.format(item.auction.endDate,'dd MMMM yyyy HH:mm')}"></span>
+			</div>
+			<div th:if="${item.auction.verified} == 'A' and ${session.X} == 'notX'">
+					
+			</div>
+			<div th:if="(${item.auction.verified} == 'N' or ${item.auction.verified} == 'A') and ${session.X} == 'notX'"  th:text="${item.description}"></div>
 		</div>
 		</div>
 		</div>
