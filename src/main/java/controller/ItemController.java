@@ -82,11 +82,20 @@ public class ItemController {
 			session.setAttribute("X", "notX");
 		return "item/itemHome";
 	}
+	
+	@RequestMapping("/bid/{id}")
+	@ResponseBody
+	public String getItemBidders(@PathVariable("id") int id){
+		Item item = service.getItem(id);
+		
+		return service.getOngoingBids(item.getAuction());
+	}
 
 	@RequestMapping("/add")
 	public String showForm(@ModelAttribute("item") Item item) {
 		return "item/addItem";
 	}
+	
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String createItem(Item item, HttpSession session) {
