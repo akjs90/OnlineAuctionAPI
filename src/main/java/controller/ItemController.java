@@ -76,13 +76,26 @@ public class ItemController {
 		User user = usrService.findUserByUsername(userWrapper.getUsername());
 		ArrayList<Item> itemsList = service.getItemByUserAndVerified(user, verify);
 		session.setAttribute("items", itemsList);
+		if(verify =='X')
+			session.setAttribute("X", "X");
+		else
+			session.setAttribute("X", "notX");
 		return "item/itemHome";
+	}
+	
+	@RequestMapping("/bid/{id}")
+	@ResponseBody
+	public String getItemBidders(@PathVariable("id") int id){
+		Item item = service.getItem(id);
+		
+		return service.getOngoingBids(item.getAuction());
 	}
 
 	@RequestMapping("/add")
 	public String showForm(@ModelAttribute("item") Item item) {
 		return "item/addItem";
 	}
+	
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String createItem(Item item, HttpSession session) {

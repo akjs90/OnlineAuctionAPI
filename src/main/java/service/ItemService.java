@@ -3,7 +3,9 @@ package service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import entity.Item;
 import entity.ItemPicture;
 import entity.User;
 import repository.AuctionRepository;
+import repository.BidRepository;
 import repository.ItemPictureRepository;
 import repository.ItemRepository;
 
@@ -23,6 +26,9 @@ public class ItemService {
 	
 	@Autowired
 	ItemPictureRepository picRepo;
+	
+	@Autowired
+	BidRepository bidRepo;
 	
 	@Autowired
 	AuctionRepository auctionRepo;
@@ -67,7 +73,7 @@ public class ItemService {
 		if(verified =='X'){
 			returnedAuction = (ArrayList<Auction>) auctionRepo.findByUserAndVerified(user, 'A');
 			for (Auction auction : returnedAuction) {
-				if(auction.getStartDate().before(new Date())){
+				if(auction.getStartDate().before(new Date()) && auction.getEndDate().after(new Date())){
 					returnedItems.add(auction.getItem());
 				}
 			}
@@ -92,5 +98,17 @@ public class ItemService {
 	}
 	public void deleteImage(int id){
 		picRepo.delete(id);
+	}
+	
+	public String getOngoingBids(Auction auction){
+		Object[] obj = bidRepo.getOngoingBids(auction);
+		System.out.println(obj.length);
+		if(obj == null)
+			return null;
+		JSONObject jObj = new JSONObject();
+		jObj.put("maxBid", obj[0]);
+		jObj.put("totalBids", obj[1]);
+		jObj.put("totalBidders", obj[2]);
+		return obj.toString();
 	}
 }
