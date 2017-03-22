@@ -49,9 +49,9 @@
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#request" aria-controls="home" role="tab" data-toggle="tab">Requests</a></li>
-				<li role="presentation"><a href="#ongoing" aria-controls="profile" role="tab" data-toggle="tab">Ongoing</a></li>
-				<li role="presentation"><a href="#complete" aria-controls="messages" role="tab" data-toggle="tab">Completed</a></li>
+				<li role="presentation" class="active"><a href="#request" aria-controls="home" role="tab" data-toggle="tab">Requests <span class="badge" th:text="${auction_request.size()}">0</span></a></li>
+				<li role="presentation"><a href="#ongoing" aria-controls="profile" role="tab" data-toggle="tab">Ongoing <span class="badge">0</span></a></li>
+				<li role="presentation"><a href="#complete" aria-controls="messages" role="tab" data-toggle="tab">Completed <span class="badge">0</span></a></li>
 			</ul>
 
 			<!-- Tab panes -->

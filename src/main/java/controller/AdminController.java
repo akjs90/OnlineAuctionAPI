@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import entity.Auction;
 import entity.OngoingAuction;
 import entity.UserWrapper;
 import service.AuctionService;
@@ -42,24 +43,25 @@ public class AdminController {
 
 	@Autowired
 	private AuctionService auctionServ;
-	
-	private SseEmitter adminEmitter=new SseEmitter(-1L);
-	
+
+	private SseEmitter adminEmitter = new SseEmitter(-1L);
+
 	@ModelAttribute("user_info")
 	private UserWrapper getAuth(SecurityContextHolder sec) {
-		Object obj=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserWrapper uw=new UserWrapper();
-		if(obj instanceof org.springframework.security.core.userdetails.User){
-			org.springframework.security.core.userdetails.User u=(org.springframework.security.core.userdetails.User)(obj);
-			
-			Object[] authorities=  u.getAuthorities().toArray();
+		Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserWrapper uw = new UserWrapper();
+		if (obj instanceof org.springframework.security.core.userdetails.User) {
+			org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) (obj);
+
+			Object[] authorities = u.getAuthorities().toArray();
 			uw.setRole(authorities[0].toString());
 			uw.setUsername(u.getUsername());
-			System.out.println("home controller "+uw.getUsername()+" --- "+uw.getRole());
+			System.out.println("home controller " + uw.getUsername() + " --- " + uw.getRole());
 		}
-		
+
 		return uw;
 	}
+
 	@RequestMapping("people")
 	public String getPeopleList(@RequestParam(name = "p", defaultValue = "1") Integer page,
 			@RequestParam(name = "l", defaultValue = "10") Integer size, ModelMap map) {
@@ -121,24 +123,38 @@ public class AdminController {
 		return "admin/completed";
 	}
 
-		@RequestMapping(value="verify",method=RequestMethod.PUT, params="id",produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "verify", method = RequestMethod.PUT, params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> rejectAuction(@RequestParam(required=true,name="id" )int auction_id) {
+	public ResponseEntity<String> rejectAuction(@RequestParam(required = true, name = "id") int auction_id) {
 		if (auctionServ.rejectAuction(auction_id))
-			return new ResponseEntity<>(HttpStatus.OK);//send mail of rejection to user.
+			return new ResponseEntity<>(HttpStatus.OK);// send mail of rejection
+														// to user.
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@RequestMapping(value="verify",method=RequestMethod.POST, params={"start-time","end-time","verify_auc_id"},produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "verify", method = RequestMethod.POST, params = { "start-time", "end-time",
+			"verify_auc_id" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> verifyAuctionRequest(@RequestParam("start-time") String start,@RequestParam("end-time") String end,int verify_auc_id) throws ParseException{
-		if(auctionServ.verifyAuctionRequest(start, end, verify_auc_id))
-			return new ResponseEntity<>(HttpStatus.OK);		//send mail of approval to user.
+	public ResponseEntity<String> verifyAuctionRequest(@RequestParam("start-time") String start,
+			@RequestParam("end-time") String end, int verify_auc_id) throws ParseException {
+		if (auctionServ.verifyAuctionRequest(start, end, verify_auc_id))
+			return new ResponseEntity<>(HttpStatus.OK); // send mail of approval
+														// to user.
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
 	@RequestMapping("/admin-events")
-	public SseEmitter adminEventsBroadcast(){
+	public SseEmitter adminEventsBroadcast() {
 		return adminEmitter;
 	}
-	
+
+	@RequestMapping("loadrequests")
+	@ResponseBody
+	public ResponseEntity<List<Auction>> loadNewAuctionRequests() {
+		List<Auction> list = auctionServ.getRecentAuctionRequest();
+		if (!list.isEmpty())
+			return new ResponseEntity<List<Auction>>(list, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 }
