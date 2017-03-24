@@ -101,14 +101,15 @@ public class ItemService {
 	}
 	
 	public String getOngoingBids(Auction auction){
-		Object[] obj = bidRepo.getOngoingBids(auction);
-		System.out.println(obj.length);
-		if(obj == null)
-			return null;
+		List<Object[]>  obj = bidRepo.getOngoingBids(auction);
+		//System.out.println(obj.length);
 		JSONObject jObj = new JSONObject();
-		jObj.put("maxBid", obj[0]);
-		jObj.put("totalBids", obj[1]);
-		jObj.put("totalBidders", obj[2]);
-		return obj.toString();
+		for (Object[] objects : obj) {
+			//System.out.println(objects.length);
+			jObj.put("maxBid", objects[0]==null?0:objects[0]);
+			jObj.put("totalBids", objects[1]==null?0:objects[1]);
+			jObj.put("totalBidders", objects[2]==null?0:objects[2]);
+		}
+		return jObj.toString();
 	}
 }

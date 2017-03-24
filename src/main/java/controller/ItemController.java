@@ -204,7 +204,6 @@ public class ItemController {
 			HttpSession session) {
 		item = service.getItem(id);
 		System.out.println("Item is " + item.getName() + " with item id" + item.getItemId());
-		// item.setName("KKKK");
 		model.addAttribute("item", item);
 		return "item/addItem";
 	}

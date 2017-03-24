@@ -11,7 +11,7 @@
 function toggleCard(id,mili){
 	console.log("called");
 	if(document.getElementById('info'+id).style.display== "none"){
-		console.log("in if");
+		//console.log("in if");
 		document.getElementById('card'+id).style.display = "none";
 		document.getElementById('info'+id).style.display = "block";
 		if(mili != 0){
@@ -20,14 +20,17 @@ function toggleCard(id,mili){
 				method:"GET",
 				success:function(data){
 					data = JSON.parse(data);
-					console.log(data);
+					document.getElementById('bidVal'+id).innerHTML = "<b>Maximum Bid: "+data['maxBid']+
+					"</b><br/>Total Bidders: "+data['totalBidders']+
+					"<br/>Total bids made till now: "+data['totalBids'];
+					//console.log(data['maxBid']);
 				}
 			});
 			timer(mili,id);
 		}
 	}
 	else{
-		console.log("in else");
+		//console.log("in else");
 		document.getElementById('card'+id).style.display = "block";
 		document.getElementById('info'+id).style.display = "none";
 	}
@@ -195,7 +198,7 @@ padding: 2%
 			<div id="contentContainer">
 				<div id="itemName" class="item-name" th:text="${item.name}"></div>
 				<div class="multiline-ellipse" th:text="${item.description}"></div>
-				<div class="text-center" style="padding-top: 10px;padding-bottom: 10px;">
+				<div class="text-center" th:if="${item.auction.verified} != 'R'" style="padding-top: 10px;padding-bottom: 10px;">
 				<a href="#" th:if="${session.X} == 'X'" th:onclick="'toggleCard(\''+${item.itemId}+'\','+${item.auction.endDate.Time}+')'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
 				<a href="#" th:if="${session.X} == 'notX'" th:onclick="'toggleCard(\''+${item.itemId}+'\',0)'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="font-size: 30px;"></span></a>
 				<span th:if="${item.auction.verified} == 'N'"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -216,7 +219,21 @@ padding: 2%
 			<div th:if="${item.auction.verified} == 'A' and ${session.X} == 'X'">
 					<div th:id="${'timer'+item.itemId}"></div>
 			</div>
+			<div th:id="${'bidVal'+item.itemId}"></div>
+			<div th:if="${item.auction.verified} == 'C'">
+			<span th:if="${item.user == null}"> <b>Sorry, not sold.</b></span>
+			<div th:if="${item.user != null}">
+			Sold to: <b><span th:text="${item.user.name}"></span></b>
+			Sold Price: <b><span th:text="${item.soldPrice}"></span></b>
+			Sold On: <span th:text="${item.soldDate}"></span>
+			</div>
+			</div>
 			<div th:if="(${item.auction.verified} == 'N' or ${item.auction.verified} == 'A') and ${session.X} == 'notX'"  th:text="${item.description}"></div>
+			<div th:if="${item.auction.verified} != 'R'" style="padding-top: 10px;padding-bottom: 10px; position: absolute;bottom: 0;left: 42%;">
+				<a href="#" th:onclick="'toggleCard(\''+${item.itemId}+'\',0)'"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="font-size: 30px;"></span></a>
+				
+				
+			</div>
 		</div>
 		</div>
 		</div>
