@@ -12,5 +12,6 @@ import entity.Bid;
 public interface BidRepository extends CrudRepository<Bid, Integer> {
 	
 	@Query("Select max(b.bidPrice),count(b),count(distinct b.user) from Bid b where b.auction =:auction")
-	Object[] getOngoingBids(@Param("auction") Auction auction);
+	//@Query(value="Select max(`bid_price`),count(*),count(distinct `bidder_id`) from bids where `auction_id` =:id",nativeQuery= true)
+	List<Object[]>  getOngoingBids(@Param("auction") Auction auction);
 }
