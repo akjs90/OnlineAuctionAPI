@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,12 @@ public class HomeController {
 
 	private final Path rootLoc = Paths.get("uploadedImages");
 
+	@RequestMapping("/")
+	public String home(ModelMap map){
+		map.addAttribute("code", "data in spring");
+		
+		return "homepage";
+	}
 	@RequestMapping(value = { "r", "register" }, method = RequestMethod.GET)
 	public String register(@ModelAttribute("reg_user") User u) {
 		return "register";
