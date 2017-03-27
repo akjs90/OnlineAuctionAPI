@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import entity.Item;
 import entity.User;
 import entity.UserWrapper;
 import service.AuctionService;
@@ -119,5 +121,11 @@ public class HomeController {
 		if(null==urls)
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		return new ResponseEntity<String[]>(urls, HttpStatus.OK);
+	}
+	
+	@RequestMapping("/home")
+	public String home(){
+		
+		return "dummy";
 	}
 }

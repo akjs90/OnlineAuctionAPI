@@ -1,13 +1,17 @@
 package controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import entity.Bid;
 import entity.Item;
 import entity.UserWrapper;
 import service.BidService;
@@ -41,9 +45,11 @@ public class BidController {
 	}
 	
 	@RequestMapping(value="/{id}")
-	public String bidItem(@PathVariable("id") int id){
+	public String bidItem(@PathVariable("id") int id,ModelMap map){
 		Item itm = itmService.getItem(id);
-		
+		List<Bid> bids = service.findTopTenBids(itm.getItemId());
+		map.addAttribute("item", itm);
+		map.addAttribute("bids", bids);
 		return "bid/home";
 	}
 	

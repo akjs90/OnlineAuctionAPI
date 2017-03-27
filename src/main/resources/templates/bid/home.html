@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html >
+<html xmlns:th="www.thymeleaf.org" >
 <head>
 <meta charset="UTF-8"/>
 <title>Online Auction</title>
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<script type="text/javascript" th:src="@{/js/jquery-3.1.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div th:replace="fragments/header::navigation"></div>
+
+	<div class=" card-style" th:id="${'card'+item.itemId}">
+			<div th:id="${'image'+item.itemId}" style="text-align: center;" class= "carousel slide" data-ride="carousel">
+					
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner" role="listbox">
+						<div class="" th:each="pic,status:${item.itemPictures}" th:class="${status.count==1?'item active':'item'}">
+						<img th:src="@{/image/__${pic.pictureUrl}__}"/>
+						</div>	
+											
+					</div>
+
+					<!-- Controls -->
+					<a class="left carousel-control" th:href="${'#image'+item.itemId}"
+						role="button" data-slide="prev"> <span
+						class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a> <a class="right carousel-control" th:href="${'#image'+item.itemId}"
+						role="button" data-slide="next"> <span
+						class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+
+	
+			<div id="contentContainer">
+				
+			</div>
+		</div>
+
 
 </body>
 </html>
