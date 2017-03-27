@@ -102,4 +102,9 @@ public class AuctionService {
 	  }
 	  return arr;
 	}
+	
+	public List<Auction> getActiveAuction(){
+		
+		return auctionRepo.getActiveAuctions();
+	} 
 }
