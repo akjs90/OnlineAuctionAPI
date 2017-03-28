@@ -60,7 +60,7 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Home</a></li>
+					<li><a href="/home">Home</a></li>
 					<!-- for admin -->
 					<li th:if="${user_info.role=='ROLE_ADMIN'}"><a href="#" th:href="@{/admin/people}">People</a></li>
 					<li th:if="${user_info.role=='ROLE_ADMIN'}"><a href="#" th:href="@{/admin/requests}">Auction</a></li>
