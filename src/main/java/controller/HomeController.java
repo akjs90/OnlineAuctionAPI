@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import entity.Auction;
 import entity.Item;
 import entity.User;
 import entity.UserWrapper;
@@ -124,8 +126,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/home")
-	public String home(){
-		
+	public String home(ModelMap map ){
+		List<Auction> auctions = aucServ.getActiveAuction();
+		map.addAttribute("auctions",auctions);
 		return "dummy";
 	}
 }

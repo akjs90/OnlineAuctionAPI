@@ -6,6 +6,30 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 <script type="text/javascript" th:src="@{/js/jquery-3.1.0.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<style type="text/css">
+.card-style {
+	max-width: 500px;
+	margin: auto;
+	border: 2px solid #CCCCCC;
+	padding: 20px;
+	border-radius: 10px;
+}
+.navbar-custom-color {
+	background-color: #4CAF50;
+}
+.nav.navbar-nav li a {
+	color: white !important;
+}
+.nav.navbar-nav li a:HOVER {
+	color: black !important;
+}
+.badge {
+	background-color: #b9192f;
+}
+.icon-bar {
+	background-color: white !important;
+}
+</style>
 </head>
 <body>
 <div th:replace="fragments/header::navigation"></div>
@@ -35,7 +59,9 @@
 
 	
 			<div id="contentContainer">
-				
+				 <div th:each="bid:${bids}">
+				 <div th:text="${bid.bidPrice}"></div>
+				 </div>
 			</div>
 		</div>
 

@@ -5,6 +5,8 @@
 <title>Online Auction</title>
 </head>
 <body>
-
+<ul th:each="auction:${auctions}">
+	<li><a th:href="@{/bid/__${auction.itemId}__}" th:text="${auction.itemId}"></a> </li>
+</ul>
 </body>
 </html>
