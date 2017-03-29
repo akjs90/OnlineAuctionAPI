@@ -1,70 +1,122 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org" >
+<html xmlns:th="www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <title>Online Auction</title>
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 <script type="text/javascript" th:src="@{/js/jquery-3.1.0.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 <style type="text/css">
-.card-style {
+.form-style {
 	max-width: 500px;
 	margin: auto;
 	border: 2px solid #CCCCCC;
 	padding: 20px;
 	border-radius: 10px;
 }
+
 .navbar-custom-color {
 	background-color: #4CAF50;
 }
+
 .nav.navbar-nav li a {
 	color: white !important;
 }
+
 .nav.navbar-nav li a:HOVER {
 	color: black !important;
 }
+
 .badge {
 	background-color: #b9192f;
 }
+
 .icon-bar {
 	background-color: white !important;
 }
+
+img {
+	height: 200px !important;
+	width: 165px;
+	margin: auto;
+}
+
+.headName {
+	text-align: center;
+	font-size: xx-large;
+	font-family: -webkit-body;
+	font-style: oblique;
+	color: darkseagreen;
+	padding-bottom: 5px;
+}
+.bidsHead{
+	font-size: large;
+	font-family: -webkit-body;
+	font-style: oblique;
+	color: darkseagreen;
+	padding-bottom: 5px;
+}
+div.scroll{
+height:107px;
+overflow: scroll;
+}
+
+
 </style>
 </head>
 <body>
-<div th:replace="fragments/header::navigation"></div>
+	<div th:replace="fragments/header::navigation"></div>
+	<div class="container">
+		<form th:action="@{/bid/}" method="post" class="form-style">
+			<div class = "headName" th:text="${item.name}"></div>
+			<div th:id="${'image'+item.itemId}" style="text-align: center;"
+				class="carousel slide" data-ride="carousel">
 
-	<div class=" card-style" th:id="${'card'+item.itemId}">
-			<div th:id="${'image'+item.itemId}" style="text-align: center;" class= "carousel slide" data-ride="carousel">
-					
-					<!-- Wrapper for slides -->
-					<div class="carousel-inner" role="listbox">
-						<div class="" th:each="pic,status:${item.itemPictures}" th:class="${status.count==1?'item active':'item'}">
-						<img th:src="@{/image/__${pic.pictureUrl}__}"/>
-						</div>	
-											
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner" role="listbox">
+					<div class="" th:each="pic,status:${item.itemPictures}"
+						th:class="${status.count==1?'item active':'item'}">
+						<img th:src="@{/image/__${pic.pictureUrl}__}" />
 					</div>
 
-					<!-- Controls -->
-					<a class="left carousel-control" th:href="${'#image'+item.itemId}"
-						role="button" data-slide="prev"> <span
-						class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
-					</a> <a class="right carousel-control" th:href="${'#image'+item.itemId}"
-						role="button" data-slide="next"> <span
-						class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
-					</a>
 				</div>
 
-	
-			<div id="contentContainer">
-				 <div th:each="bid:${bids}">
-				 <div th:text="${bid.bidPrice}"></div>
-				 </div>
+				<!-- Controls -->
+				<a class="left carousel-control" th:href="${'#image'+item.itemId}"
+					role="button" data-slide="prev"> <span
+					class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a> <a class="right carousel-control" th:href="${'#image'+item.itemId}"
+					role="button" data-slide="next"> <span
+					class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
 			</div>
-		</div>
-
-
+			<hr/>
+			
+			<div id="contentContainer" style="text-align: center;">
+			<span class="bidsHead">Top Bids</span>
+			<div class="scroll" th:if="${bids != null}">
+				<div th:each="bid:${bids}" >
+					<div th:text="${bid.bidPrice}"></div>
+				</div>
+			</div>
+			<div class="scroll" th:if="${bids == null}">Be the first to bid.</div>
+			</div>
+			<hr/>
+			<div class="form-group">
+				<label>Bid Amount</label>
+				<div class="input-group">
+					<div class="input-group-addon"
+						style="background-color: #4CAF50; color: white;">&#8377;</div>
+					<input type="number" class="form-control" id="exampleInputAmount"
+						placeholder="Amount" required="required" name="bidPrice"></input>
+					<div class="input-group-addon"
+						style="background-color: #4CAF50; color: white;">.00</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-success form-control">Submit</button>
+		</form>
+	</div>
 </body>
 </html>
