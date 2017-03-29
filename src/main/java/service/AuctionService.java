@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -101,5 +102,26 @@ public class AuctionService {
 		  arr.put(obj);
 	  }
 	  return arr;
+	}
+	
+	public JSONArray getAuctionForHomepage(){
+		JSONArray array=new JSONArray();
+		//get Popular ongoing auction top 3
+		List<Object[]> popular=auctionRepo.getPopularOngoingAuction();
+		for (Object[] obj:popular) {
+			JSONObject json=new JSONObject();
+			json.put("type", "ongoing");
+			json.put("auction_id", obj[0]);
+			json.put("item_name", obj[1]);
+			//get image here
+			//json.put("image","1/1");
+			
+		}
+		//get  completed top 3 in last 50 days
+		
+		//get 3 upcoming in next 50 days
+		
+		
+		return array;
 	}
 }
