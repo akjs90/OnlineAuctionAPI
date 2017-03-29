@@ -9,12 +9,16 @@
 }
 </style>
 <script type="text/javascript" th:inline="javascript">
-var c=/*[[${code}]]*/;
+/*<![CDATA[*/
+           var c=[[${code}]];
+           
+/*]]>*/
+
 </script>
 </head>
 <body>
 	<div th:replace="fragments/header::navigation"></div>
-	<h3>[# th:utext="${code}"/]</h3>
+	<h3></h3>
 	<div id="auction_carousel" class="carousel slide" data-ride="carousel" style="background-color: #292525;">
 		<div class="carousel-inner" role="listbox">
 			<div class="item active">

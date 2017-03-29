@@ -22,7 +22,7 @@ public class ItemPicture implements Serializable {
 	private String pictureUrl;
 
 	//bi-directional many-to-one association to Item
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="item_id")
 	private Item item;
 

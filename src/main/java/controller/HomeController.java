@@ -39,7 +39,7 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String home(ModelMap map){
-		map.addAttribute("code", "data in spring");
+		map.addAttribute("code", aucServ.getAuctionForHomepage());
 		
 		return "homepage";
 	}

@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import repository.AuctionRepository;
+import repository.ItemPictureRepository;
 import entity.Auction;
 import entity.Item;
 import entity.ItemPicture;
@@ -27,6 +28,8 @@ import entity.OngoingAuction;
 public class AuctionService {
 	@Autowired
 	AuctionRepository auctionRepo;
+	@Autowired
+	ItemPictureRepository picRepo;
 
 	public List<Auction> getRecentAuctionRequest() {
 		return auctionRepo.findByVerifiedOrderByItem_RegistrationDateDesc('N');
@@ -104,7 +107,7 @@ public class AuctionService {
 	  return arr;
 	}
 	
-	public JSONArray getAuctionForHomepage(){
+	public String getAuctionForHomepage(){
 		JSONArray array=new JSONArray();
 		//get Popular ongoing auction top 3
 		List<Object[]> popular=auctionRepo.getPopularOngoingAuction();
@@ -114,14 +117,15 @@ public class AuctionService {
 			json.put("auction_id", obj[0]);
 			json.put("item_name", obj[1]);
 			//get image here
-			//json.put("image","1/1");
-			
+			ItemPicture picture=picRepo.findTop1ByItem_ItemId(Integer.parseInt(obj[0].toString()));
+			json.put("image",picture.getPictureUrl());
+			array.put(json);
 		}
 		//get  completed top 3 in last 50 days
 		
 		//get 3 upcoming in next 50 days
+		System.out.println("assas0"+array.toString());
 		
-		
-		return array;
+		return array.toString();
 	}
 }
