@@ -34,7 +34,7 @@ public class CustomAuthenticationSuccessHandler implements
 		userWrapper.setRole(authorities[0].toString());
 		System.out.println("Custm redirect: "+userWrapper.getUsername());
 		session.setAttribute("user_info", userWrapper);
-		redirectStrategy.sendRedirect(request, response, "/welcome");
+		redirectStrategy.sendRedirect(request, response, "/");
 		
 	}
 }

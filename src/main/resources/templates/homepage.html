@@ -10,8 +10,38 @@
 </style>
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/
-           var c=[[${code}]];
            
+$(document).ready(function(){
+	var c=[[${code}]];
+	var json=JSON.parse(c);
+	for(var x in json){
+		var data=json[x];
+		var str='';
+		if(x==0)
+		str='<div class="item active">';
+		else
+		str='<div class="item">';
+		if(data.type=="upcoming"){
+			var s_date=new Date(data.start);
+			var e_date=new Date(data.end);
+			str+='<img src="/image/'+data.image+'"/><div class="container"><div class="carousel-caption">';
+			str+='<h1>'+data.name+'</h1>';
+			str+='<p>From '+s_date+' to '+e_date+'</p></div></div>';
+			
+		}
+		else if(data.type=="ongoing"){
+			var e_date=new Date(data.end);
+			str+='<img src="/image/'+data.image+'"/><div class="container"><div class="carousel-caption">';
+			str+='<h1>'+data.name+'</h1>';
+			str+='<p>Ends on '+e_date+'</p></div></div>';
+		}
+		str+='</div>';
+		$('#auction_carousel > .carousel-inner') .append(str);
+		
+	}
+})
+
+        
 /*]]>*/
 
 </script>
@@ -19,83 +49,11 @@
 <body>
 	<div th:replace="fragments/header::navigation"></div>
 	<h3></h3>
-	<div id="auction_carousel" class="carousel slide" data-ride="carousel" style="background-color: #292525;">
+	<th:block th:if="${user_info.role}==null">
+		<div id="auction_carousel" class="carousel slide" data-ride="carousel"
+		style="background-color: #292525;">
 		<div class="carousel-inner" role="listbox">
-			<div class="item active">
-				<img alt="" th:src="@{/image/1/1}" />
-				<div class="container">
-					<div class="carousel-caption">
-						<h1>Example headline.</h1>
-						<p>
-							Note: If you're viewing this page via a
-							<code>file://</code>
-							URL, the "next" and "previous" Glyphicon buttons on the left and
-							right might not load/display properly due to web browser security
-							rules.
-						</p>
-					</div>
-				</div>
-			</div>
-			<div class="item ">
-				<img alt="" th:src="@{/image/1/3}" />
-				<div class="container">
-					<div class="carousel-caption">
-						<h1>Example headline.</h1>
-						<p>
-							Note: If you're viewing this page via a
-							<code>file://</code>
-							URL, the "next" and "previous" Glyphicon buttons on the left and
-							right might not load/display properly due to web browser security
-							rules.
-						</p>
-					</div>
-				</div>
-			</div>
-			<div class="item ">
-				<img alt="" th:src="@{/image/1/4}" />
-				<div class="container">
-					<div class="carousel-caption">
-						<h1>Example headline.</h1>
-						<p>
-							Note: If you're viewing this page via a
-							<code>file://</code>
-							URL, the "next" and "previous" Glyphicon buttons on the left and
-							right might not load/display properly due to web browser security
-							rules.
-						</p>
-					</div>
-				</div>
-			</div>
-			<div class="item ">
-				<img alt="" th:src="@{/image/2/1}" />
-				<div class="container">
-					<div class="carousel-caption">
-						<h1>Example headline.</h1>
-						<p>
-							Note: If you're viewing this page via a
-							<code>file://</code>
-							URL, the "next" and "previous" Glyphicon buttons on the left and
-							right might not load/display properly due to web browser security
-							rules.
-						</p>
-					</div>
-				</div>
-			</div>
-			<div class="item ">
-				<img alt="" th:src="@{/image/1/6}" />
-				<div class="container">
-					<div class="carousel-caption">
-						<h1>Example headline.</h1>
-						<p>
-							Note: If you're viewing this page via a
-							<code>file://</code>
-							URL, the "next" and "previous" Glyphicon buttons on the left and
-							right might not load/display properly due to web browser security
-							rules.
-						</p>
-					</div>
-				</div>
-			</div>
+			
 		</div>
 		<a class="left carousel-control" href="#auction_carousel"
 			role="button" data-slide="prev"> <span
@@ -107,8 +65,9 @@
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
-	<div class="container">
-		<h1>some text</h1>
-	</div>
+	</th:block>
+	<th:block th:unless="${user_info.role}==null">
+	<h1>Hello !!</h1>
+	</th:block>
 </body>
 </html>

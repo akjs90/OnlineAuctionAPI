@@ -74,7 +74,7 @@ public class HomeController {
 	public String login(@ModelAttribute("user_info") UserWrapper user) {
 		System.out.println("here i am in login");
 		if (user.getUsername() != null)
-			return "redirect:/welcome";
+			return "redirect:/";
 		return "login";
 	}
 
@@ -91,7 +91,7 @@ public class HomeController {
 		System.out.println("User " + u.getEmail());
 		user.setRole(u.getRole().getRole());
 		System.out.println("Hello");
-		return "redirect:/welcome";
+		return "redirect:/";
 	}
 
 	@RequestMapping("welcome")

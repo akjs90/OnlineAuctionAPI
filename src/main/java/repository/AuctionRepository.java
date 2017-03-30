@@ -57,13 +57,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 	@Query(value = "SELECT a.item_id,i.name,a.start_date,a.end_date,max(b.bid_price) as `bid_price`,count(b.bid_price) as `Total Bids` , count(distinct(b.bidder_id)) as `total bidders` FROM `auction` as a Left join `bids` as b ON item_id=auction_id Left join `item` as i ON i.item_id=a.item_id WHERE a.verified='C' OR a.verified='A' AND current_timestamp>a.end_date  group by i.item_id order by a.end_date desc ", nativeQuery = true)
 	List<Object[]> getCompletedAuctions();
 
-	@Query(value = "SELECT `item`.`item_id`,`item`.`name`, COUNT(DISTINCT `bids`.`bidder_id`) FROM `auction` LEFT JOIN `bids` ON `bids`.`auction_id` = `auction`.`item_id`LEFT JOIN `item`ON `item`.`item_id`=`auction`.`item_id` WHERE CURRENT_TIMESTAMP BETWEEN `auction`.`start_date` AND `auction`.`end_date` AND`auction`.`verified`='A' GROUP BY `item`.`item_id` LIMIT 3", nativeQuery = true)
+	@Query(value = "SELECT `item`.`item_id`,`item`.`name`, COUNT(DISTINCT `bids`.`bidder_id`), `auction`.`end_date` FROM `auction` LEFT JOIN `bids` ON `bids`.`auction_id` = `auction`.`item_id`LEFT JOIN `item`ON `item`.`item_id`=`auction`.`item_id` WHERE CURRENT_TIMESTAMP BETWEEN `auction`.`start_date` AND `auction`.`end_date` AND`auction`.`verified`='A' GROUP BY `item`.`item_id` LIMIT 3", nativeQuery = true)
 	List<Object[]> getPopularOngoingAuction();
 
+	@Query(value="SELECT i.item_id,i.name, a.start_date,a.end_date FROM auction a JOIN item i ON i.item_id=a.item_id WHERE a.verified='A' and date(a.start_date) Between current_date and DAte_add(Current_date,interval 50 day) limit 3 ", nativeQuery=true)
+	List<Object[]> getUpcomingActionIn50Days();
 	/*
-	 * SELECT * FROM `auction` Where `auction`.verified='A' and
-	 * date(`start_date` ) Between current_date and DAte_add(Current_date,
-	 * interval 50 day) limit 3
+	 * SELECT * FROM `auction` Where `auction`.verified='A' and date(`start_date` ) Between current_date and DAte_add(Current_date,interval 50 day) limit 3
 	 * SELECT * FROM `auction` Where
 	 * `auction`.verified='C' and date(`end_date` ) Between current_date and
 	 * DAte_sub(Current_date, interval 50 day) limit 3;

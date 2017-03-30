@@ -115,7 +115,9 @@ public class AuctionService {
 			JSONObject json=new JSONObject();
 			json.put("type", "ongoing");
 			json.put("auction_id", obj[0]);
-			json.put("item_name", obj[1]);
+			json.put("name", obj[1]);
+			Date d=(Date) obj[3];
+			json.put("end", d.getTime());
 			//get image here
 			ItemPicture picture=picRepo.findTop1ByItem_ItemId(Integer.parseInt(obj[0].toString()));
 			json.put("image",picture.getPictureUrl());
@@ -124,7 +126,21 @@ public class AuctionService {
 		//get  completed top 3 in last 50 days
 		
 		//get 3 upcoming in next 50 days
-		System.out.println("assas0"+array.toString());
+		popular=auctionRepo.getUpcomingActionIn50Days();
+		for(Object[] obj:popular){
+			JSONObject json=new JSONObject();
+			json.put("type", "upcoming");
+			json.put("item_id", obj[0]);
+			json.put("name", obj[1]);
+			Date d=(Date) obj[2];
+			json.put("start", d.getTime());
+			d=(Date) obj[3];
+			json.put("end", d.getTime());
+			ItemPicture picture=picRepo.findTop1ByItem_ItemId(Integer.parseInt(obj[0].toString()));
+			json.put("image",picture.getPictureUrl());
+			array.put(json);
+		}
+		//System.out.println("assas0"+array.toString());
 		
 		return array.toString();
 	}
