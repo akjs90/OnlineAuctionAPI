@@ -1,7 +1,12 @@
 package entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +46,7 @@ public class Item implements Serializable {
 
 	//bi-directional one-to-one association to Auction
 	@OneToOne(mappedBy="item")
+	@Fetch(FetchMode.JOIN)
 	private Auction auction;
 
 	//bi-directional many-to-one association to User

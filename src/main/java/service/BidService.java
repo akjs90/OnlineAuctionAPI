@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import entity.Bid;
 import repository.BidRepository;
-
 @Service
 public class BidService {
 

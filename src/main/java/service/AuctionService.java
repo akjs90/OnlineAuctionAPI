@@ -5,18 +5,17 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import repository.AuctionRepository;
+import repository.ItemPictureRepository;
 import entity.Auction;
 import entity.Item;
 import entity.ItemPicture;
@@ -26,6 +25,8 @@ import entity.OngoingAuction;
 public class AuctionService {
 	@Autowired
 	AuctionRepository auctionRepo;
+	@Autowired
+	ItemPictureRepository picRepo;
 
 	public List<Auction> getRecentAuctionRequest() {
 		return auctionRepo.findByVerifiedOrderByItem_RegistrationDateDesc('N');
@@ -103,8 +104,55 @@ public class AuctionService {
 	  return arr;
 	}
 	
+
 	public List<Auction> getActiveAuction(){
 		
 		return auctionRepo.getActiveAuctions();
 	} 
+
+	public String getAuctionForHomepage(){
+		JSONArray array=new JSONArray();
+		//get Popular ongoing auction top 3
+		List<Object[]> popular=auctionRepo.getPopularOngoingAuction();
+		for (Object[] obj:popular) {
+			JSONObject json=new JSONObject();
+			json.put("type", "ongoing");
+			json.put("auction_id", obj[0]);
+			json.put("name", obj[1]);
+			Date d=(Date) obj[3];
+			json.put("end", d.getTime());
+			//get image here
+			ItemPicture picture=picRepo.findTop1ByItem_ItemId(Integer.parseInt(obj[0].toString()));
+			json.put("image",picture.getPictureUrl());
+			array.put(json);
+		}
+		//get  completed top 3 in last 50 days
+		
+		//get 3 upcoming in next 50 days
+		popular=auctionRepo.getUpcomingActionIn50Days();
+		for(Object[] obj:popular){
+			JSONObject json=new JSONObject();
+			json.put("type", "upcoming");
+			json.put("item_id", obj[0]);
+			json.put("name", obj[1]);
+			Date d=(Date) obj[2];
+			json.put("start", d.getTime());
+			d=(Date) obj[3];
+			json.put("end", d.getTime());
+			ItemPicture picture=picRepo.findTop1ByItem_ItemId(Integer.parseInt(obj[0].toString()));
+			json.put("image",picture.getPictureUrl());
+			array.put(json);
+		}
+		//System.out.println("assas0"+array.toString());
+		
+		return array.toString();
+	}
+	public List<Object[]> getCompletedObjectList(){
+		
+		return auctionRepo.getCompletedAuctions();
+	}
+	
+	public List<Object[]> getUpcomingAuctions(){
+		return auctionRepo.getUpcomingActionIn50Days();
+	}
 }

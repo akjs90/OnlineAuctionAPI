@@ -34,11 +34,25 @@ import service.UserService;
 public class HomeController {
 	@Autowired
 	UserService service;
-	
+
 	@Autowired
 	AuctionService aucServ;
 
 	private final Path rootLoc = Paths.get("uploadedImages");
+
+	@RequestMapping("/")
+	public String home(ModelMap map) {
+		UserWrapper user = (UserWrapper) map.get("user_info");
+		if (null == user.getRole())
+			map.addAttribute("code", aucServ.getAuctionForHomepage());
+		else{
+			map.addAttribute("ongoing",aucServ.getOngoingAuctionList());
+			map.addAttribute("completed", aucServ.getCompletedObjectList());
+			map.addAttribute("upcoming", aucServ.getUpcomingAuctions());
+		}
+			
+		return "homepage";
+	}
 
 	@RequestMapping(value = { "r", "register" }, method = RequestMethod.GET)
 	public String register(@ModelAttribute("reg_user") User u) {
@@ -50,20 +64,22 @@ public class HomeController {
 		service.registerUser(u);
 		return "redirect:/r";
 	}
-	
+
 	@ModelAttribute("user_info")
 	private UserWrapper getAuth(SecurityContextHolder sec) {
-		Object obj=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserWrapper uw=new UserWrapper();
-		if(obj instanceof org.springframework.security.core.userdetails.User){
-			org.springframework.security.core.userdetails.User u=(org.springframework.security.core.userdetails.User)(obj);
-			
-			Object[] authorities=  u.getAuthorities().toArray();
+		Object obj = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		UserWrapper uw = new UserWrapper();
+		if (obj instanceof org.springframework.security.core.userdetails.User) {
+			org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) (obj);
+
+			Object[] authorities = u.getAuthorities().toArray();
 			uw.setRole(authorities[0].toString());
 			uw.setUsername(u.getUsername());
-			System.out.println("home controller "+uw.getUsername()+" --- "+uw.getRole());
+			System.out.println("home controller " + uw.getUsername() + " --- "
+					+ uw.getRole());
 		}
-		
+
 		return uw;
 	}
 
@@ -71,13 +87,13 @@ public class HomeController {
 	public String login(@ModelAttribute("user_info") UserWrapper user) {
 		System.out.println("here i am in login");
 		if (user.getUsername() != null)
-			return "redirect:/welcome";
+			return "redirect:/";
 		return "login";
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String authentication(@ModelAttribute("user_info") UserWrapper user, RedirectAttributes attr,
-			SessionStatus session) {
+	public String authentication(@ModelAttribute("user_info") UserWrapper user,
+			RedirectAttributes attr, SessionStatus session) {
 		User u = service.authorize(user);
 
 		if (u == null) {
@@ -88,7 +104,7 @@ public class HomeController {
 		System.out.println("User " + u.getEmail());
 		user.setRole(u.getRole().getRole());
 		System.out.println("Hello");
-		return "redirect:/welcome";
+		return "redirect:/";
 	}
 
 	@RequestMapping("welcome")
@@ -110,23 +126,28 @@ public class HomeController {
 	}
 
 	@RequestMapping("image/{path}/{imagename}")
-	public @ResponseBody byte[] imageReader(@PathVariable("path") String path, @PathVariable("imagename") String name) throws IOException {
-		File serveFile = new File(rootLoc.toString()+File.separator+"item"+path);
-		Path p=Paths.get("uploadedImages", "item"+path,"item"+path+"_"+name);
+	public @ResponseBody byte[] imageReader(@PathVariable("path") String path,
+			@PathVariable("imagename") String name) throws IOException {
+		File serveFile = new File(rootLoc.toString() + File.separator + "item"
+				+ path);
+		Path p = Paths.get("uploadedImages", "item" + path, "item" + path + "_"
+				+ name);
 		if (!serveFile.exists())
 			return null;
 		return Files.readAllBytes(p);
 	}
+
 	@RequestMapping("/getimages/{auction_id}")
-	public @ResponseBody ResponseEntity<String[]>  getImages(@PathVariable("auction_id")int auction_id){
-		String[] urls=aucServ.getItemImages(auction_id);
-		if(null==urls)
+	public @ResponseBody ResponseEntity<String[]> getImages(
+			@PathVariable("auction_id") int auction_id) {
+		String[] urls = aucServ.getItemImages(auction_id);
+		if (null == urls)
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		return new ResponseEntity<String[]>(urls, HttpStatus.OK);
 	}
 	
 	@RequestMapping("/home")
-	public String home(ModelMap map ){
+	public String home_dummy(ModelMap map ){
 		List<Auction> auctions = aucServ.getActiveAuction();
 		map.addAttribute("auctions",auctions);
 		return "dummy";

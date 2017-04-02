@@ -9,61 +9,48 @@ $('document').ready(function() {
             console.log('set');
         }
     });
+    loadOngoing();
+    loadComplete();
 });
-var requestLoad=function(){
-	$.ajax({
-		url:'requested'
-	});
-}
-$('a[href="#request"]').on('shown.bs.tab',function(e){
-	
-});
-$('a[href="#ongoing"]').on('hide.bs.tab', function(e) {
-    for (i = 0; i < intervals.length; i++) {
-        clearInterval(intervals[i]);
-    }
-    intervals = [];
-});
-$('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
-    console.log(e.target);
-    for (i = 0; i < intervals.length; i++) {
-        clearInterval(intervals[i]);
-    }
-    intervals = [];
-    $.ajax({
-        url: '/auction/ongoing',
-        success: function(data) {
-            //$('#ongoing').html("<h1>HHHHH</h1>");
-            var string = "";
-            data.forEach(function(e) {
-                console.log(e['itemName']);
-                var id = e['auction_id'];
-                string += '<div class="list-group-item"><div class="row"><div class="col-md-8"><p style="font-size: 16px;">' + e['itemName'] +
-                    '</p></div><div class="col-md-4">';
-                string += '<div><span style="font-size: 16px; font-weight: 700;margin-right: 30px;">Time Left</span> <span style="font-size: 16px; font-weight: 700" id="time' + id + '">' +
-                    e['timeRemaining'] + '</span></div>';
-                string += '<div><span style="font-size: 16px;margin-right: 12px;">Current Price</span><span style="font-size: 16px;" id="price' + id + '">Rs ' +
-                    e['current_bid'] + '</span></div>';
-                string += '<div><span style="font-size: 16px;margin-right: 36px;">Total Bids</span><span style="font-size: 16px;" id="bids' + id + '">' +
-                    e['totalBids'] + '</span></div>';
-                string += '<div><span style="font-size: 16px;margin-right: 14px;">Total Bidders</span><span style="font-size: 16px;" id="bidders' + id + '">' +
-                    e['totalBidders'] + '</span></div>';
-                string += '</div></div></div>';
-                timer(e['timeRemaining'], id);
 
-            });
-            $('#error_on').empty();
-            $('#curr_auction').html(string);
-        },
-        error: function(data) {
-            $('#curr_auction').empty();
-            $('#error_on').html("<h1>ERROR</h1>");
-        }
-    });
-});
-$('a[href="#complete"]').on('shown.bs.tab', function(e) {
-    console.log(e.target);
-    $.ajax({
+
+var loadOngoing=function(){
+	 $.ajax({
+	        url: '/auction/ongoing',
+	        success: function(data) {
+	            //$('#ongoing').html("<h1>HHHHH</h1>");
+	            var string = "";
+	            data.forEach(function(e) {
+	                console.log(e['itemName']);
+	                var id = e['auction_id'];
+	                string += '<div class="list-group-item"><div class="row"><div class="col-md-8"><p style="font-size: 16px;">' + e['itemName'] +
+	                    '</p></div><div class="col-md-4">';
+	                string += '<div><span style="font-size: 16px; font-weight: 700;margin-right: 30px;">Time Left</span> <span style="font-size: 16px; font-weight: 700" id="time' + id + '">' +
+	                    e['timeRemaining'] + '</span></div>';
+	                string += '<div><span style="font-size: 16px;margin-right: 12px;">Current Price</span><span style="font-size: 16px;" id="price' + id + '">Rs ' +
+	                    e['current_bid'] + '</span></div>';
+	                string += '<div><span style="font-size: 16px;margin-right: 36px;">Total Bids</span><span style="font-size: 16px;" id="bids' + id + '">' +
+	                    e['totalBids'] + '</span></div>';
+	                string += '<div><span style="font-size: 16px;margin-right: 14px;">Total Bidders</span><span style="font-size: 16px;" id="bidders' + id + '">' +
+	                    e['totalBidders'] + '</span></div>';
+	                string += '</div></div></div>';
+	                timer(e['timeRemaining'], id);
+	               
+	            });
+	            $('#error_on').empty();
+	            $('#curr_auction').html(string);
+	            $('a[href="#ongoing"] .badge').html(data.length);
+	            
+	        },
+	        error: function(data) {
+	            $('#curr_auction').empty();
+	            $('#error_on').html("<h1>ERROR</h1>");
+	        }
+	    });
+}
+
+var loadComplete=function(){
+	$.ajax({
         url: '/auction/completed',
         success: function(data) {
         	var string = "";
@@ -89,12 +76,24 @@ $('a[href="#complete"]').on('shown.bs.tab', function(e) {
             
         	});
         	$('#completed_auc').html(string);
-        	
+        	$('a[href="#complete"] .badge').html(data.length);
         },
         error: function(e) {
         	
         }
     });
+}
+$('a[href="#request"]').on('shown.bs.tab',function(e){
+	
+});
+$('a[href="#ongoing"]').on('hide.bs.tab', function(e) {
+   
+});
+$('a[href="#ongoing"]').on('shown.bs.tab', function(e) {
+    
+});
+$('a[href="#complete"]').on('shown.bs.tab', function(e) {
+  
 });
 $('.reject').on('click', function(e) {
     e.preventDefault();
@@ -109,6 +108,7 @@ $('.reject').on('click', function(e) {
         success: function(data, status) {
             cur.hide(500, function() {
                 $(this).remove();
+                $('a[href="#request"] .badge').html(parseInt($('a[href="#request"] .badge').text())-1);
             });
         },
         error: function(data, status) {
@@ -133,6 +133,7 @@ $('#verify-form').on('submit', function(e) {
             $('#myModal').modal('hide');
             _element.hide(500, function() {
                 $(this).remove();
+                $('a[href="#request"] .badge').html(parseInt($('a[href="#request"] .badge').text())-1);
             });
         },
         error: function(data, status) {
@@ -200,6 +201,7 @@ var timer = function(miliseconds, id) {
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("time" + id).innerHTML = "EXPIRED";
+            loadComplete();
         }
 
     }, 1000);
