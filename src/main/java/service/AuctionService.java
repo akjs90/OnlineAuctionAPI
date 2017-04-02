@@ -144,4 +144,12 @@ public class AuctionService {
 		
 		return array.toString();
 	}
+	public List<Object[]> getCompletedObjectList(){
+		
+		return auctionRepo.getCompletedAuctions();
+	}
+	
+	public List<Object[]> getUpcomingAuctions(){
+		return auctionRepo.getUpcomingActionIn50Days();
+	}
 }
